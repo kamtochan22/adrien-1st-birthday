@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Adrien Birthday//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:adrien-1st-birthday-20261017@clublusitano
+DTSTAMP:20260920T160000Z
+DTSTART:20261017T040000Z
+DTEND:20261017T080000Z
+SUMMARY:Adrien 週歲 · 1st Birthday Party
+DESCRIPTION:陳綽霆一歲生日午宴\nReception 12:00noon · lunch 12:30pm\nPortuguese lunch buffet · Smart casual
+LOCATION:Salão Nobre de Camões, 27/F, Club Lusitano, 16 Ice House Street, Central, Hong Kong
+END:VEVENT
+END:VCALENDAR
