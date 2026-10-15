@@ -53,26 +53,36 @@ function record_(p) {
   if (CHOICES.indexOf(choice) < 0) return { ok: false, error: 'bad choice' };
   const dev = String(p.d || '').slice(0, 40);
 
-  const sh = sheet_();
-  const last = sh.getLastRow();
+  // 60 部電話同一秒撳：Apps Script 會並行跑幾個 execution，兩個同時掃 device 欄
+  // 會各自以為「未投過」而寫兩行。鎖一鎖寫入，避免同一部機被計兩票。
+  // 攞唔到鎖都照寫 —— 少一票好過冇一票。
+  const lock = LockService.getScriptLock();
+  try { lock.waitLock(4000); } catch (e) {}
 
-  // 一部電話一票：同一個 device id 再投就覆蓋舊票
-  if (dev && last > 1) {
-    const devs = sh.getRange(2, 3, last - 1, 1).getValues();
-    for (let i = 0; i < devs.length; i++) {
-      if (String(devs[i][0]) === dev) {
-        sh.getRange(i + 2, 1).setValue(new Date().toISOString());
-        sh.getRange(i + 2, 2).setValue(choice);
-        CacheService.getScriptCache().remove('counts');
-        return { ok: true, updated: true, counts: counts_().counts, total: counts_().total };
+  try {
+    const sh = sheet_();
+    const last = sh.getLastRow();
+
+    // one vote per device: same device id votes again → overwrite its old row
+    if (dev && last > 1) {
+      const devs = sh.getRange(2, 3, last - 1, 1).getValues();
+      for (let i = 0; i < devs.length; i++) {
+        if (String(devs[i][0]) === dev) {
+          sh.getRange(i + 2, 1).setValue(new Date().toISOString());
+          sh.getRange(i + 2, 2).setValue(choice);
+          CacheService.getScriptCache().remove('counts');
+          return { ok: true, updated: true, counts: counts_().counts, total: counts_().total };
+        }
       }
     }
-  }
 
-  sh.appendRow([new Date().toISOString(), choice, dev, '']);
-  CacheService.getScriptCache().remove('counts');
-  const c = counts_();
-  return { ok: true, counts: c.counts, total: c.total };
+    sh.appendRow([new Date().toISOString(), choice, dev, '']);
+    CacheService.getScriptCache().remove('counts');
+    const c = counts_();
+    return { ok: true, counts: c.counts, total: c.total };
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
 }
 
 function reset_() {

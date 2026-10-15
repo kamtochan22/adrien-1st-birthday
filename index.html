@@ -901,13 +901,18 @@ function castVote(id) {
   myVote = id;
   localStorage.setItem(VOTE_KEY, id);
   counts[id] = (counts[id] || 0) + 1;
-  paint();
+  paint();                                   // 本地先畫，即時有反應，唔等伺服器
+
+  /* 屋企 60 部電話同一秒撳，偶爾有一次請求會失手。所以重覆送幾次 ——
+     伺服器認 device id，同一部機只會有一行（係覆蓋唔係疊加），所以重送零風險。 */
   const url = VOTE_API + '?action=vote&choice=' + encodeURIComponent(id) +
               '&d=' + encodeURIComponent(deviceId) + '&t=' + Date.now();
-  const img = new Image();
-  img.src = url;
+  const send = () => { const img = new Image(); img.src = url + '&r=' + Date.now(); };
+  send();
+  setTimeout(send, 6000);
+  setTimeout(send, 18000);
   setTimeout(loadCounts, 1500);
-  setTimeout(loadCounts, 4000);
+  setTimeout(loadCounts, 7000);
 }
 
 let jsonpN = 0;
