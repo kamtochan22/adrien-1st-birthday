@@ -79,4 +79,16 @@ const VOTE_API = 'https://script.google.com/macros/s/AKfy..... /exec';
 | bar 永遠 0 | Apps Script `Who has access` 唔係 `Anyone` |
 | Console 見 `SyntaxError` 喺 `?cb=` | 部署版本舊；重新 deploy 一個 New version |
 | 想清空票數重來 | 瀏覽器開 `<URL>?action=reset&key=adrien-zhuazhou-2026` |
-| 票數 load 得好慢 | 正常。快取 20 秒，網頁每 25 秒讀一次（慳 Apps Script 每日額度） |
+| 票數 load 得好慢 | 正常。快取 20 秒，網頁每 40 秒讀一次（慳 Apps Script 每日額度） |
+| 票數比實際人數多 | 唔應該發生（LockService 擋咗重覆寫入）。開 Sheet 睇下係唔係同名 device 有兩行 |
+
+## 本機測試（唔使上 Google）
+
+`vote.gs` 嘅邏輯可以喺 node 度跑，用假嘅 SpreadsheetApp / CacheService /
+LockService / ContentService。14 條 assertion：一部機一票、重覆送 3 次唔會
+三重計、60 部電話 = 60 票、壞 choice 唔收、reset 要 key、攞唔到鎖都照寫。
+
+```bash
+node _vote_setup/test_vote.js && node /tmp/adrien_vote_run.js
+```
+
