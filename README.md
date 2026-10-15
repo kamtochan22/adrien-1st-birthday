@@ -41,15 +41,16 @@ Cover frame = t=88 s, letterbox bands auto-detected and cropped out (`video/post
 ### Page 4 — 最喜愛相 + 攪珠機
 `#favphoto`, inserted between the film and the zhuazhou vote. Two halves.
 
-**1. Results (public).** The RSVP question 「最鍾意邊張相」 (photo numbers =
-`pics/1–26.jpg`), tallied from `~/Documents/Adrien週歲Party/02_邀請嘉賓/rsvp-raw.txt`;
-the maintained copy is `最喜愛相-投票結果.md`. Ranked rows show votes +
-**% of the 23 voting groups** (one vote per RSVP household; Edel answered 「全部」
-so is out of the %, 杜靖賢 isn't coming, the hosts don't vote). Champion card
-(相 12 · 26%), then a collapsed gallery of all 26 photos. **No voter names** on
-this page — that was a deliberate ask.
+**1. Results (public) — top 3 only.** 冠亞季: 相 12 (26%) as the big card, 相 10 (22%)
+and 相 5 (13%) side by side, each a 3:4 cropped tile with medal + % over a gradient.
+**Percentages only** — the vote counts sit in `FAV` but are never printed on the page.
+The RSVP question 「最鍾意邊張相」 (photo numbers = `pics/1–26.jpg`) is tallied from
+`~/Documents/Adrien週歲Party/02_邀請嘉賓/rsvp-raw.txt`; the maintained copy is
+`最喜愛相-投票結果.md`. Denominator = the **23 voting groups** (one vote per RSVP
+household; Edel answered 「全部」 so is out of the %, 杜靖賢 isn't coming, the hosts
+don't vote). **No voter names** on this page — that was a deliberate ask.
 Editing the numbers = one array at the top of the inline script: `TOTAL` +
-`FAV = [[photo, votes], …]`. Nothing else to touch.
+`FAV = [[photo, votes], …]`, and add rows for 冠亞季 order. Nothing else to touch.
 
 **2. 攪珠 (host only).** A 六合彩-style drum — no images, all CSS (radial-gradient
 glass, inset rim highlight, spinning crank) with 11 balls, one per adult who voted
