@@ -78,7 +78,7 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
 }
 .hero-copy{
   position:relative;z-index:3;text-align:center;width:100%;
-  padding:0 var(--space-lg) clamp(28px,5vh,52px);
+  padding:0 var(--space-lg) calc(clamp(30px,5.5vh,56px) + env(safe-area-inset-bottom,0px));
   opacity:0;transform:translateY(16px);
   animation:copyRise 0.9s var(--spring) 0.28s both;
 }
@@ -101,19 +101,46 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
   letter-spacing:0.04em;color:rgba(255,255,255,0.78);
 }
 .scroll-cue{
-  display:inline-flex;flex-direction:column;align-items:center;gap:2px;margin-top:18px;
+  display:inline-flex;flex-direction:column;align-items:center;gap:0;margin-top:14px;
   color:rgba(255,255,255,0.88);font-family:var(--sans);font-size:11px;font-weight:400;
   letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  transform:translateY(calc(var(--cue-push,0) * 6px));
+  transition:transform .18s ease-out;
 }
-.scroll-cue i{display:block;font-style:normal;font-size:16px;line-height:1;animation:scrollBounce 1.6s ease-in-out infinite;}
-@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:.45;}50%{transform:translateY(7px);opacity:1;}}
+.cue-head{
+  display:block;width:78px;height:auto;margin-bottom:-6px;
+  filter:drop-shadow(0 5px 14px rgba(0,0,0,.6));
+  transform:rotate(calc(var(--cue-push,0) * -5deg));
+  transition:transform .18s ease-out;
+  animation:cueBob 3.4s ease-in-out infinite;
+}
+@keyframes cueBob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.cue-finger{
+  display:block;font-size:29px;line-height:1;
+  filter:drop-shadow(0 3px 9px rgba(0,0,0,.6));
+  transform:translateY(calc(var(--cue-push,0) * 6px));
+  animation:cuePush 1.7s cubic-bezier(.5,0,.5,1) infinite;
+}
+.cue-word{
+  display:block;margin-top:4px;
+  font-size:10px;letter-spacing:.22em;opacity:.85;
+}
+@keyframes cuePush{
+  0%  {translate:0 -5px;opacity:.4}
+  18% {translate:0 5px; opacity:1}
+  40% {translate:0 5px; opacity:1}
+  62% {translate:0 -5px;opacity:.4}
+  100%{translate:0 -5px;opacity:.4}
+}
+.hero-copy .scroll-cue{color:#fff;}
 @keyframes copyRise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 @media (min-width:900px){.hero-media img{object-position:center 46%;}}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:.45;}50%{transform:translateY(7px);opacity:1;}}
 .section-cue{
   display:flex;width:fit-content;margin:var(--space-xl) auto 0;
   color:var(--primary);text-decoration:none;
 }
-.section-cue i{font-size:15px;animation:scrollBounce 1.6s ease-in-out infinite;}
+.section-cue i{font-size:15px;font-style:normal;animation:scrollBounce 1.6s ease-in-out infinite;}
 
 /* ===== Page 2 — rundown ===== */
 .rundown-section{background:#FAF3E7;border-top:1px solid var(--neutral);border-bottom:1px solid var(--neutral);}
@@ -736,7 +763,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
   .hero-media img,.hero-copy{animation:none;transition:none;opacity:1;transform:none;}
-  .scroll-cue i,.section-cue i{animation:none;opacity:1;}
+  .scroll-cue i,.section-cue i,.cue-head,.cue-finger{animation:none;opacity:1;}
   .hero-media img:not(.is-on){opacity:0;}
 }
 </style>
@@ -755,7 +782,11 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
     <h1><span class="welcome">Welcome to</span><span class="who">Adrien 1st Birthday Party 🎂</span></h1>
     <p class="subtitle">陳綽霆 · 一歲生日午宴</p>
     <p class="meta">17 Oct 2026 · Club Lusitano · Central</p>
-    <a class="scroll-cue" href="#rundown" aria-label="向下"><span>Scroll</span><i>↓</i></a>
+    <a class="scroll-cue" href="#rundown" aria-label="向下">
+      <img class="cue-head" src="adrien-head.png" alt="" width="220" height="435" decoding="async">
+      <span class="cue-finger" aria-hidden="true">👇</span>
+      <span class="cue-word">Scroll</span>
+    </a>
   </div>
 </section>
 
@@ -1018,6 +1049,28 @@ if (heroSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce
     heroIndex = (heroIndex + 1) % heroSlides.length;
     heroSlides[heroIndex].classList.add('is-on');
   }, 3000);
+}
+
+/* ---------- hero scroll cue: the hand reacts to a real scroll gesture ---------- */
+const heroCue = document.querySelector('.hero-copy .scroll-cue');
+if (heroCue && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let push = 0, decay = null;
+  const apply = () => heroCue.style.setProperty('--cue-push', push.toFixed(2));
+  const kick = v => {
+    push = Math.min(1, Math.max(push, v));
+    apply();
+    clearTimeout(decay);
+    decay = setTimeout(() => { push = 0; apply(); }, 340);
+  };
+  let lastY = 0;
+  addEventListener('touchstart', e => { lastY = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchmove', e => {
+    const dy = lastY - e.touches[0].clientY;          // 手指向上推 = 想向下睇
+    lastY = e.touches[0].clientY;
+    if (dy > 0) kick(Math.min(1, dy / 55));
+  }, { passive: true });
+  addEventListener('wheel', e => { if (e.deltaY > 0) kick(Math.min(1, e.deltaY / 40)); }, { passive: true });
+  addEventListener('scroll', () => kick(Math.min(1, window.scrollY / 200)), { passive: true });
 }
 
 /* ---------- growth film: one tap to play ---------- */
