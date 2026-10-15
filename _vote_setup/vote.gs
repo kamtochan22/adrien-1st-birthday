@@ -1,6 +1,7 @@
 const SHEET_NAME = 'Votes';
 const RESET_KEY  = 'adrien-zhuazhou-2026';
 const CACHE_SEC  = 20;
+const VERSION    = 3;                       // 每改一次 +1；GET 回應會帶住佢，一眼知換到未
 const CHOICES    = ['calculator','pen','ingot','tennis','lipstick'];
 
 function sheet_() {
@@ -119,6 +120,7 @@ function doGet(e) {
       out = { ok: true, reset: true, counts: payload_().counts, total: 0, voters: [] };
     } else out = payload_();
   } catch (err) { out = { ok: false, error: String(err) }; }
+  if (out && typeof out === 'object') out.v = VERSION;   // 版本印記：一眼睇到換到未
   const cb = p.cb;
   return ContentService
     .createTextOutput(cb ? cb + '(' + JSON.stringify(out) + ')' : JSON.stringify(out))

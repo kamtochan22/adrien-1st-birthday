@@ -48,6 +48,7 @@ const t = (n, c, x='') => { c ? pass++ : fail++; console.log((c?'  PASS ':'  FAI
 // ---------------- zhuazhou vote (unchanged behaviour) ----------------
 const js = doGet({ parameter: { cb: 'x' } }).getContent();
 t('jsonp shape', js.startsWith('x(') && js.endsWith(')'));
+t('version marker present', JSON.parse(doGet({parameter:{}}).getContent()).v === 3);
 t('vote without a name is refused', call({ action:'vote', choice:'tennis', d:'devA' }).ok === false);
 let r = call({ action:'vote', choice:'tennis', d:'devA', n:'Dicky' });
 t('vote with a name appends', votes.rows.length === 2 && r.ok && r.total === 1);
