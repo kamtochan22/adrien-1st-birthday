@@ -265,6 +265,14 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
   max-width:520px;margin:var(--space-lg) auto 0;text-align:center;
   font-size:.72rem;color:rgba(59,40,20,.45);line-height:1.7;
 }
+.vote-refresh{text-align:center;margin:var(--space-md) auto 0;}
+.vote-refresh button{
+  font:inherit;font-family:var(--round);font-size:.6rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--secondary);
+  background:none;border:0;border-bottom:1px solid rgba(55,141,179,.35);
+  padding:2px 1px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.vote-refresh button[disabled]{color:rgba(59,40,20,.3);border-bottom-color:transparent;cursor:default;}
 
 /* ===== Page 5 — the message (envelope gate) ===== */
 #message{
@@ -656,6 +664,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 
     <p class="vote-total" id="voteTotal">即刻投票</p>
     <div class="vote-bars" id="voteBars"></div>
+    <p class="vote-refresh"><button type="button" id="voteRefresh">更新票數</button></p>
     <p class="vote-note">一部電話一票 · 投完可以睇走勢，結果唔會影響 Adrien 嘅決定 😄</p>
     <a class="section-cue" href="#message" aria-label="向下"><i>↓</i></a>
   </div>
@@ -820,6 +829,10 @@ if (filmCover && filmVideo) {
 /* ---------- zhuazhou vote ---------- */
 const VOTE_API = 'PASTE_APPS_SCRIPT_WEB_APP_URL_HERE';
 const VOTE_ON  = VOTE_API.indexOf('http') === 0;
+if (!VOTE_ON) {
+  const row = document.querySelector('.vote-refresh');
+  if (row) row.style.display = 'none';       // 未開通就唔好出個攞唔到數嘅掣
+}
 
 const ITEMS = [
   { id:'calculator', zh:'計數機', en:'Calculator', tag:'精打細算', color:'#378DB3',
@@ -914,16 +927,44 @@ function loadCounts() {
 
 paint();
 if (VOTE_ON) {
-  /* Apps Script 每日執行時間有上限 → 唔好死 poll。
-     只在投票區喺畫面內、而且個 tab 係開住嘅時候，每 25 秒讀一次。 */
-  const POLL_MS = 25000;
-  let timer = null;
-  const startPoll = () => {
-    if (timer) return;
-    loadCounts();
-    timer = setInterval(() => { if (!document.hidden) loadCounts(); }, POLL_MS);
+  /* Apps Script 免費帳號每日有總執行時間上限 → 唔可以死 poll，否則party中途爆額度，
+     全部人一齊讀唔到票數。三重節流：
+       1. 40 秒一次（夠「實時」，但慳 40% 請求）
+       2. 只喺投票區出現喺畫面、而且個 tab 開住先 poll
+       3. 一次開頁最多 30 次自動更新（約 20 分鐘）之後停，改為手動「更新票數」掣
+     另外：過咗 AUTO_STOP_AFTER 之後唔再自動更新（party 完結就唔使燒額度），
+     但賓客照樣可以投票、可以手動更新。 */
+  const POLL_MS        = 40000;
+  const MAX_POLLS      = 30;
+  const AUTO_STOP_AFTER = Date.parse('2026-10-17T16:00:00+08:00');   // party 散場後停自動更新
+
+  const refreshBtn = document.getElementById('voteRefresh');
+  let timer = null, polls = 0, stopped = false;
+
+  const stopPoll = (label) => {
+    clearInterval(timer); timer = null;
+    if (stopped) return;
+    stopped = true;
+    if (refreshBtn) { refreshBtn.disabled = false; if (label) refreshBtn.textContent = label; }
   };
-  const stopPoll = () => { clearInterval(timer); timer = null; };
+  const startPoll = () => {
+    if (timer || stopped) return;
+    loadCounts();
+    timer = setInterval(() => {
+      if (document.hidden) return;
+      if (++polls >= MAX_POLLS || Date.now() > AUTO_STOP_AFTER) { stopPoll('更新票數'); return; }
+      loadCounts();
+    }, POLL_MS);
+  };
+
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.disabled = true;
+      const done = () => { refreshBtn.disabled = false; };
+      loadCounts();
+      setTimeout(done, 1200);
+    });
+  }
 
   const voteSec = document.getElementById('zhuazhou');
   if ('IntersectionObserver' in window && voteSec) {
