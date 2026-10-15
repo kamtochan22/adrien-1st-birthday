@@ -59,16 +59,22 @@ const VOTE_API = 'https://script.google.com/macros/s/AKfy..... /exec';
 ## 5. 自己試一次
 
 1. 開網站，落到「抓周投票」
-2. 撳「網球」
-3. 去 Sheet 睇下 `Votes` tab 有冇多一行
+2. 填個名，撳「網球」
+3. 去 Sheet 睇下 `Votes` tab 有冇多一行（D 欄應該有你個名）
 4. 開另一個瀏覽器（或無痕）再投，票數應該加
+5. 網頁下面應該出「邊個估邊樣」名單
+
+> ⚠️ 順手改一改：Sheet 入面 D1 原本寫 `Note`，改成 `Name` 好睇啲
+> （唔改都運作正常，只係標題字眼）
 
 ## 驗收 checklist
 
-- [ ] Sheet `Votes` tab 有 `Timestamp / Choice / Device / Note` 四個標題
-- [ ] 撳一個選項 → Sheet 多一行
+- [ ] Sheet `Votes` tab 有 `Timestamp / Choice / Device / Name` 四個標題
+- [ ] 冇填名就撳 → 投票唔成立，輸入框紅框 + 提示
+- [ ] 填咗名撳 → Sheet 多一行，有選擇 + 有名字
 - [ ] 同一部機再撳，係**覆蓋**舊票，唔係加一行
 - [ ] 網站票數條 bar 有數，total 加咗
+- [ ] 下面「邊個估邊樣」出到名，跟選項分組
 - [ ] 手機 Safari 開都投到（iOS 一定要試）
 
 ## 出事點救

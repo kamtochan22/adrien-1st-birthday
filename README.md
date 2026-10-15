@@ -41,15 +41,22 @@ Cover frame = t=88 s, letterbox bands auto-detected and cropped out (`video/post
 GitHub Pages is static, so it can't count votes. Uses **Google Apps Script + Google
 Sheet** over GET + JSONP (no CORS, works on every phone):
 
-- `?action=vote&choice=<id>&d=<deviceId>` — record (one row per device; re-voting overwrites)
-- `?action=counts&cb=<fn>` — JSONP counts, cached 20 s in `CacheService`
+- `?action=vote&choice=<id>&d=<deviceId>&n=<name>` — record (one row per device;
+  re-voting overwrites both choice and name). Name is **required** by the server.
+- `?action=counts&cb=<fn>` — JSONP `{counts, total, voters:[{n,c}]}`, cached 20 s
 - `?action=reset&key=adrien-zhuazhou-2026` — wipe votes
 
-Polling is **25 s, only while `#zhuazhou` is on screen and the tab is visible** — Apps
-Script has a daily *script runtime* quota and 60 phones hammering it would blow through.
+Sheet columns: `Timestamp | Choice | Device | Name`. Names are shown publicly on
+the page under 「邊個估邊樣」, grouped by choice — guests see who guessed what.
+Names are escaped before insertion into the DOM.
 
-`_vote_setup/vote.gs` + `_vote_setup/SETUP.md` — deploy walkthrough.
-Until the `/exec` URL is pasted into `VOTE_API`, the page shows 投票即將開放 and taps do nothing.
+Polling is **40 s, only while `#zhuazhou` is on screen and the tab is visible**,
+capped at 30 auto-refreshes per page load and stopped entirely after 16:00 on party
+day — Apps Script has a daily *script runtime* quota and 60 phones hammering it
+would blow through it. A manual 「更新票數」 button takes over once polling stops.
+
+`_vote_setup/vote.gs` + `_vote_setup/SETUP.md` + `_vote_setup/test_vote.js`
+(23 assertions against stubbed Google services: `node test_vote.js && node /tmp/adrien_vote_run.js`).
 
 ### Page 5 — ported from the wedding site
 `~/Projects/stephanie-richard-wedding/index.html` envelope opener, lifted into the
