@@ -12,12 +12,16 @@ function sheet_() {
 }
 function clean_(s, n) {
   return String(s == null ? '' : s)
-    .replace(/[\r\n\t]+/g, ' ')                 // 換行／Tab 當空格
-    .replace(/[\u0000-\u001f\u007f]/g, '')      // 其他控制字元直接掉走
+    .replace(/[\r\n\t]+/g, ' ')
+    .replace(/[\u0000-\u001f\u007f]/g, '')
     .replace(/\s+/g, ' ')
     .trim().slice(0, n);
 }
 function bust_() { CacheService.getScriptCache().remove('payload'); }
+function out_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o))
+    .setMimeType(ContentService.MimeType.JSON);
+}
 
 function payload_() {
   const c = CacheService.getScriptCache(), hit = c.get('payload');
@@ -61,6 +65,46 @@ function record_(p) {
     const b = payload_();
     return { ok: true, counts: b.counts, total: b.total, voters: b.voters };
   } finally { try { lock.releaseLock(); } catch (e) {} }
+}
+
+/* ---------- wedding RSVP: the same deployment also receives the form ---------- */
+function rsvpSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('RSVP');
+  if (!sh) sh = ss.insertSheet('RSVP');
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(['Timestamp','Local','Name','Email','Attendance','Guests','Dietary','Note','Source','Key']);
+  }
+  return sh;
+}
+
+function doPost(e) {
+  try {
+    const d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const who = clean_(d.name, 60) || clean_(d.email, 80);
+    if (!who) return out_({ success: false, error: 'empty' });   // 空 body 唔好寫垃圾行
+    const lock = LockService.getScriptLock();
+    try { lock.waitLock(4000); } catch (err) {}
+    try {
+      const sh = rsvpSheet_(), k = clean_(d.key, 24), last = sh.getLastRow();
+      if (k && last > 1) {
+        const keys = sh.getRange(2, 10, last - 1, 1).getValues();
+        for (let i = 0; i < keys.length; i++) {
+          if (String(keys[i][0]) === k) return out_({ success: true, dup: true, row: i + 2 });
+        }
+      }
+      sh.appendRow([
+        new Date().toISOString(),
+        Utilities.formatDate(new Date(), 'GMT+8', 'yyyy-MM-dd HH:mm'),
+        clean_(d.name, 60), clean_(d.email, 80), clean_(d.attendance, 30),
+        clean_(d.guests, 4), clean_(d.diet, 200), clean_(d.note, 500),
+        clean_(d.source, 30) || 'wedding-site', k
+      ]);
+      return out_({ success: true, row: sh.getLastRow() });
+    } finally { try { lock.releaseLock(); } catch (err) {} }
+  } catch (err) {
+    return out_({ success: false, error: String(err) });
+  }
 }
 
 function doGet(e) {
