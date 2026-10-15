@@ -48,7 +48,7 @@ const t = (n, c, x='') => { c ? pass++ : fail++; console.log((c?'  PASS ':'  FAI
 // ---------------- zhuazhou vote (unchanged behaviour) ----------------
 const js = doGet({ parameter: { cb: 'x' } }).getContent();
 t('jsonp shape', js.startsWith('x(') && js.endsWith(')'));
-t('version marker present', JSON.parse(doGet({parameter:{}}).getContent()).v === 3);
+t('version marker present', JSON.parse(doGet({parameter:{}}).getContent()).v === 4)
 t('vote without a name is refused', call({ action:'vote', choice:'tennis', d:'devA' }).ok === false);
 let r = call({ action:'vote', choice:'tennis', d:'devA', n:'Dicky' });
 t('vote with a name appends', votes.rows.length === 2 && r.ok && r.total === 1);
@@ -80,6 +80,17 @@ t('retry with same key does not duplicate', rsvp.rows.length === 2 && p.dup === 
 // a different guest
 p = post({ name:'Uncle Ben', email:'b@example.com', attendance:'regretfully-declines', key:'k2' });
 t('second RSVP appends', rsvp.rows.length === 3 && p.row === 3);
+
+// ---------------- RSVP confirmation probe (what the guest's page polls) ----------------
+let ck = call({ action:'rsvpcheck', key:'k1' });
+t('rsvpcheck finds a delivered key', ck.ok === true && ck.found === true && ck.row === 2, JSON.stringify(ck));
+ck = call({ action:'rsvpcheck', key:'no-such-key' });
+t('rsvpcheck reports a missing key', ck.ok === true && ck.found === false, JSON.stringify(ck));
+ck = call({ action:'rsvpcheck', key:'' });
+t('rsvpcheck with no key is refused', ck.ok === false, JSON.stringify(ck));
+t('rsvpcheck also honours cb', doGet({ parameter: { action:'rsvpcheck', key:'k1', cb:'z' } })
+  .getContent() === 'z({"ok":true,"found":true,"row":2,"v":4})');
+t('rsvpcheck does not create rows', rsvp.rows.length === 3, 'rows='+rsvp.rows.length);
 
 // no key at all -> still records (never lose a reply)
 p = post({ name:'No Key', email:'n@example.com', attendance:'joyfully-accepts' });

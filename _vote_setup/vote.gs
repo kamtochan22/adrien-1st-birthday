@@ -1,7 +1,7 @@
 const SHEET_NAME = 'Votes';
 const RESET_KEY  = 'adrien-zhuazhou-2026';
 const CACHE_SEC  = 20;
-const VERSION    = 3;                       // 每改一次 +1；GET 回應會帶住佢，一眼知換到未
+const VERSION    = 4;                       // 每改一次 +1；GET 回應會帶住佢，一眼知換到未
 const CHOICES    = ['calculator','pen','ingot','tennis','lipstick'];
 
 function sheet_() {
@@ -79,6 +79,20 @@ function rsvpSheet_() {
   return sh;
 }
 
+/* 畀客人個網頁查「我嗰行入到未」——POST 係 opaque（no-cors 讀唔到回應），
+   所以要用 GET + JSONP 補一槍先算真正確認。 */
+function rsvpCheck_(k) {
+  const key = clean_(k, 24);
+  if (!key) return { ok: false, found: false };
+  const sh = rsvpSheet_(), last = sh.getLastRow();
+  if (last < 2) return { ok: true, found: false };
+  const keys = sh.getRange(2, 10, last - 1, 1).getValues();
+  for (let i = 0; i < keys.length; i++) {
+    if (String(keys[i][0]) === key) return { ok: true, found: true, row: i + 2 };
+  }
+  return { ok: true, found: false };
+}
+
 function doPost(e) {
   try {
     const d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
@@ -113,6 +127,7 @@ function doGet(e) {
   let out;
   try {
     if (p.action === 'vote') out = record_(p);
+    else if (p.action === 'rsvpcheck') out = rsvpCheck_(p.key);
     else if (p.action === 'reset' && p.key === RESET_KEY) {
       const sh = sheet_();
       if (sh.getLastRow() > 1) sh.deleteRows(2, sh.getLastRow() - 1);
