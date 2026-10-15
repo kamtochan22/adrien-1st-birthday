@@ -46,15 +46,18 @@ and 相 5 (13%) side by side, each a 3:4 cropped tile with medal + % over a grad
 **Percentages only** — the vote counts sit in `FAV` but are never printed on the page.
 The RSVP question 「最鍾意邊張相」 (photo numbers = `pics/1–26.jpg`) is tallied from
 `~/Documents/Adrien週歲Party/02_邀請嘉賓/rsvp-raw.txt`; the maintained copy is
-`最喜愛相-投票結果.md`. Denominator = the **23 voting groups** (one vote per RSVP
-household; Edel answered 「全部」 so is out of the %, 杜靖賢 isn't coming, the hosts
-don't vote). **No voter names** on this page — that was a deliberate ask.
+`最喜愛相-投票結果.md`. Denominator = the **23 numeric votes**, counted **one per RSVP
+submission** — the owner's call (2026-10-16) after 嫲嫲 5 / 爺爺 14 turned out to be two
+submissions from one household. Edel answered 「全部」 so is out of the %, 杜靖賢 isn't
+coming, the hosts don't vote. **No voter names** on this page — a deliberate ask.
 Editing the numbers = one array at the top of the inline script: `TOTAL` +
 `FAV = [[photo, votes], …]`, and add rows for 冠亞季 order. Nothing else to touch.
 
 **2. 攪珠 (host only).** A 六合彩-style drum — no images, all CSS (radial-gradient
-glass, inset rim highlight, spinning crank) with 11 balls, one per adult who voted
-for 相 12. Press → drum shakes + balls tumble ~2.6 s → the picked ball flies into the
+glass, inset rim highlight, spinning crank) with **10 balls**, one per adult of the
+households that voted 相 12. (It was 11: `Chan Hoi Ling` was dropped because the CSV
+records Chan Hoi Ling as the original name of the `Ling Ling + Tong` household — the
+same person was in the drum twice.) Press → drum shakes + balls tumble ~2.6 s → the picked ball flies into the
 chute and drops into the tray → name revealed. Picked with `crypto.getRandomValues`,
 never repeats; the drawn list lives in `localStorage`; 「重設抽籤」 clears it.
 

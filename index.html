@@ -879,7 +879,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 
     <div class="lucky" id="lucky" hidden>
       <h3 class="lucky-title">🎰 攪珠：揀中冠軍相嘅人</h3>
-      <p class="lucky-sub">波波入面係揀咗相 12 嘅 11 位大人。撳「攪珠」，睇下邊位係幸運兒。</p>
+      <p class="lucky-sub">波波入面係揀咗相 12 嘅 10 位大人。撳「攪珠」，睇下邊位係幸運兒。</p>
       <div class="machine" id="machine" aria-hidden="true">
         <div class="drum"></div>
         <div class="glare"></div>
@@ -1521,14 +1521,13 @@ if (gate) {
     ['姨公',       '姨婆Eva + 姨公'],
     ['Steven',    'Steven + Denise 家'],
     ['Denise',    'Steven + Denise 家'],
-    ['Hoi Ling',  'Chan Hoi Ling'],
     ['Ling Ling', 'Ling Ling + Tong 家'],
     ['Tong',      'Ling Ling + Tong 家']
   ];
   const COLORS = ['#A83A2C','#8A9A7B','#378DB3','#C4956A','#B5657A','#6E8B6B'];
   const DRAWN_KEY = 'adrien_lucky_drawn';
   const CX = 125, CY = 121;
-  const RINGS = [[4, 42, 45], [7, 84, 12.5]];
+  const RINGS = [[3, 42, 45], [7, 84, 12.5]];
   const CHUTE = { inside: [52, 248], rest: [52, 286] };
 
   BOX.hidden = false;
@@ -1585,7 +1584,7 @@ if (gate) {
   if (!left().length){
     btn.disabled = true;
     btn.textContent = '全部抽完';
-    out.innerHTML = '<span class="sub">11 位都抽過。撳「重設抽籤」可以再嚟。</span>';
+    out.innerHTML = '<span class="sub">' + BALLS.length + ' 位都抽過。撳「重設抽籤」可以再嚟。</span>';
   }
 
   function roll(max){
