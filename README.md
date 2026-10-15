@@ -12,6 +12,20 @@ Static site on **GitHub Pages**: <https://kamtochan22.github.io/adrien-1st-birth
 | 3 | `#film` | Growth film, one tap to play. `video/growth.mp4` |
 | 4 | `#zhuazhou` | 抓周投票 — 5 choices, live counts |
 | 5 | `#message` | `We have a message to you` → tap → envelope opens → the wedding invitation card |
+| 5b | `#wedding` | after the letter opens, scrolling continues into the **whole wedding invitation site**, embedded |
+
+### Page 5b — the invitation itself
+`#wedding` is `display:none` until `body.letter-open` (set at the end of the envelope
+timeline), so the ordering can't be short-circuited. It then lazy-loads
+
+    https://kamtochan22.github.io/stephanie-richard-wedding/?skipenvelope=1
+
+in a `100svh` iframe. `skipenvelope=1` is a backwards-compatible param added to the
+wedding site so it drops its **own** intro envelope (`html.skip-envelope` hides
+`#opener` and skips the scroll lock) — otherwise the guest opens one envelope and
+finds a second one waiting below. Default behaviour there is unchanged.
+GitHub Pages sends no `X-Frame-Options`/CSP, so framing is allowed — verified.
+A 「喺新視窗打開完整邀請」 link is the fallback; the spinner also gives up after 9 s.
 
 ### Page 2 keeps to the guest-facing facts only
 Time / what happens. **Not** on the page: headcount, seating, who's responsible,
