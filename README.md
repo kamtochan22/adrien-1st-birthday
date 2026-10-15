@@ -3,18 +3,19 @@
 One-page day-of site for Adrien (陳綽霆) 1st birthday — 17 Oct 2026, Club Lusitano 27/F.
 Static site on **GitHub Pages**: <https://kamtochan22.github.io/adrien-1st-birthday/>
 
-## The five pages
+## The six pages
 
 | # | id | what |
 |---|---|---|
 | 1 | `.hero` | Full-bleed photo (3 rotating), `Welcome to Adrien 1st Birthday Party` in Huninn |
 | 2 | `#rundown` | 今日流程 — the 6 guest-facing rows off the A4 rundown card (RUNDOWN header, brick red `#A83A2C`, Quicksand + 中文 gloss) |
 | 3 | `#film` | Growth film, one tap to play. `video/growth.mp4` |
-| 4 | `#zhuazhou` | 抓周投票 — 5 choices, live counts |
-| 5 | `#message` | `We have a message to you` → tap → envelope opens → the wedding invitation card |
-| 5b | `#wedding` | after the letter opens, scrolling continues into the **whole wedding invitation site**, embedded |
+| 4 | `#favphoto` | 最喜愛相 — RSVP photo-vote results (% of voters) + **host-only 攪珠機** |
+| 5 | `#zhuazhou` | 抓周投票 — 5 choices, live counts |
+| 6 | `#message` | `We have a message to you` → tap → envelope opens → the wedding invitation card |
+| 6b | `#wedding` | after the letter opens, scrolling continues into the **whole wedding invitation site**, embedded |
 
-### Page 5b — the invitation itself
+### Page 6b — the invitation itself
 `#wedding` is `display:none` until `body.letter-open` (set at the end of the envelope
 timeline), so the ordering can't be short-circuited. It then lazy-loads
 
@@ -37,7 +38,31 @@ Source `~/remotion-poc/src/Growth.tsx` (`body_720.mp4`, 107 s, 9:16).
 Web copy: CRF 28, `+faststart`, 96 kbps AAC → **11.4 MB** (was 54 MB).
 Cover frame = t=88 s, letterbox bands auto-detected and cropped out (`video/poster.jpg`).
 
-### Page 4 — the vote backend
+### Page 4 — 最喜愛相 + 攪珠機
+`#favphoto`, inserted between the film and the zhuazhou vote. Two halves.
+
+**1. Results (public).** The RSVP question 「最鍾意邊張相」 (photo numbers =
+`pics/1–26.jpg`), tallied from `~/Documents/Adrien週歲Party/02_邀請嘉賓/rsvp-raw.txt`;
+the maintained copy is `最喜愛相-投票結果.md`. Ranked rows show votes +
+**% of the 23 voting groups** (one vote per RSVP household; Edel answered 「全部」
+so is out of the %, 杜靖賢 isn't coming, the hosts don't vote). Champion card
+(相 12 · 26%), then a collapsed gallery of all 26 photos. **No voter names** on
+this page — that was a deliberate ask.
+Editing the numbers = one array at the top of the inline script: `TOTAL` +
+`FAV = [[photo, votes], …]`. Nothing else to touch.
+
+**2. 攪珠 (host only).** A 六合彩-style drum — no images, all CSS (radial-gradient
+glass, inset rim highlight, spinning crank) with 11 balls, one per adult who voted
+for 相 12. Press → drum shakes + balls tumble ~2.6 s → the picked ball flies into the
+chute and drops into the tray → name revealed. Picked with `crypto.getRandomValues`,
+never repeats; the drawn list lives in `localStorage`; 「重設抽籤」 clears it.
+
+Unlock: open **`?host=adrien17`** once — `localStorage.adrien_host` then keeps that
+phone unlocked. Fallback: 5 quick taps on the section title → passcode prompt.
+Guests never see the block (`#lucky` stays `hidden`). The code sits in the source,
+so treat it as a party gag, not security.
+
+### Page 5 — the vote backend
 GitHub Pages is static, so it can't count votes. Uses **Google Apps Script + Google
 Sheet** over GET + JSONP (no CORS, works on every phone):
 
@@ -58,7 +83,7 @@ would blow through it. A manual 「更新票數」 button takes over once pollin
 `_vote_setup/vote.gs` + `_vote_setup/SETUP.md` + `_vote_setup/test_vote.js`
 (23 assertions against stubbed Google services: `node test_vote.js && node /tmp/adrien_vote_run.js`).
 
-### Page 5 — ported from the wedding site
+### Page 6 — ported from the wedding site
 `~/Projects/stephanie-richard-wedding/index.html` envelope opener, lifted into the
 `#message` section and scoped (`body.opening` → `#message.opening`, assets under
 `wedding/`). `layoutEnvelope()` still maps `--flap` / `--pk-*` / `--seal-*` from the
