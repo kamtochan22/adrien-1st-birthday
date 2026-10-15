@@ -78,7 +78,7 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
 }
 .hero-copy{
   position:relative;z-index:3;text-align:center;width:100%;
-  padding:0 var(--space-lg) calc(clamp(30px,5.5vh,56px) + env(safe-area-inset-bottom,0px));
+  padding:0 var(--space-lg) calc(clamp(38px,6.5vh,68px) + env(safe-area-inset-bottom,0px));
   opacity:0;transform:translateY(16px);
   animation:copyRise 0.9s var(--spring) 0.28s both;
 }
@@ -101,22 +101,14 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
   letter-spacing:0.04em;color:rgba(255,255,255,0.78);
 }
 .scroll-cue{
-  display:inline-flex;flex-direction:column;align-items:center;gap:0;margin-top:14px;
+  display:inline-flex;flex-direction:column;align-items:center;gap:0;margin-top:20px;
   color:rgba(255,255,255,0.88);font-family:var(--sans);font-size:11px;font-weight:400;
   letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
   transform:translateY(calc(var(--cue-push,0) * 6px));
   transition:transform .18s ease-out;
 }
-.cue-head{
-  display:block;width:78px;height:auto;margin-bottom:-6px;
-  filter:drop-shadow(0 5px 14px rgba(0,0,0,.6));
-  transform:rotate(calc(var(--cue-push,0) * -5deg));
-  transition:transform .18s ease-out;
-  animation:cueBob 3.4s ease-in-out infinite;
-}
-@keyframes cueBob{0%,100%{translate:0 0}50%{translate:0 -6px}}
 .cue-finger{
-  display:block;font-size:29px;line-height:1;
+  display:block;font-size:32px;line-height:1;
   filter:drop-shadow(0 3px 9px rgba(0,0,0,.6));
   transform:translateY(calc(var(--cue-push,0) * 6px));
   animation:cuePush 1.7s cubic-bezier(.5,0,.5,1) infinite;
@@ -787,7 +779,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
   .hero-media img,.hero-copy{animation:none;transition:none;opacity:1;transform:none;}
-  .scroll-cue i,.section-cue i,.cue-head,.cue-finger{animation:none;opacity:1;}
+  .scroll-cue i,.section-cue i,.cue-finger{animation:none;opacity:1;}
   .hero-media img:not(.is-on){opacity:0;}
 }
 </style>
@@ -807,7 +799,6 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
     <p class="subtitle">陳綽霆 · 一歲生日午宴</p>
     <p class="meta">17 Oct 2026 · Club Lusitano · Central</p>
     <a class="scroll-cue" href="#rundown" aria-label="向下">
-      <img class="cue-head" src="adrien-head.png" alt="" width="220" height="435" decoding="async">
       <span class="cue-finger" aria-hidden="true">👇</span>
       <span class="cue-word">Scroll</span>
     </a>
