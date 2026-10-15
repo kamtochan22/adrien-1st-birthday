@@ -207,7 +207,60 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
 
 /* ===== Page 4 — zhuazhou vote ===== */
 .vote-section{background:var(--surface);border-top:1px solid var(--neutral);border-bottom:1px solid var(--neutral);}
-.vote-lead{max-width:520px;margin:-16px auto var(--space-xl);text-align:center;color:rgba(59,40,20,.72);font-size:.95rem;line-height:1.75;}
+.vote-lead{max-width:520px;margin:-16px auto var(--space-lg);text-align:center;color:rgba(59,40,20,.72);font-size:.95rem;line-height:1.75;}
+
+/* name field */
+.vote-name{max-width:340px;margin:0 auto var(--space-lg);text-align:center;}
+.vote-name label{
+  display:block;font-family:var(--round);font-size:.58rem;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--tertiary);margin-bottom:8px;
+}
+.vote-name input{
+  width:100%;font:inherit;font-size:1rem;text-align:center;color:var(--primary);
+  background:var(--surface);border:1px solid var(--outline);
+  border-radius:var(--radius-full);padding:12px 18px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.vote-name input:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(55,141,179,.18);}
+.vote-name input.nudge{
+  border-color:var(--brick);box-shadow:0 0 0 3px rgba(168,58,44,.18);
+  animation:nameShake .4s ease;
+}
+@keyframes nameShake{
+  0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}
+  50%{transform:translateX(5px)}75%{transform:translateX(-3px)}
+}
+.vote-name-hint{
+  margin-top:9px;font-size:.75rem;color:rgba(59,40,20,.5);line-height:1.5;
+}
+.vote-name-hint.warn{color:var(--brick);}
+
+/* who voted for what */
+.vote-who-wrap{max-width:560px;margin:var(--space-xxl) auto 0;}
+.vote-who-title{
+  text-align:center;font-family:var(--round);font-weight:600;font-size:.62rem;
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(59,40,20,.5);
+  margin-bottom:16px;
+}
+.vote-who{display:grid;gap:11px;}
+.who-row{
+  display:grid;grid-template-columns:10px 74px 1fr 26px;
+  gap:10px;align-items:baseline;
+  padding-bottom:11px;border-bottom:1px dashed rgba(168,58,44,.14);
+}
+.who-row:last-child{border-bottom:none;padding-bottom:0;}
+.who-dot{width:10px;height:10px;border-radius:50%;align-self:center;}
+.who-item{font-size:.88rem;color:var(--primary);white-space:nowrap;}
+.who-names{font-size:.82rem;color:rgba(59,40,20,.62);line-height:1.6;word-break:break-word;}
+.who-n{
+  font-family:var(--round);font-weight:600;font-size:.72rem;
+  color:rgba(59,40,20,.4);text-align:right;
+}
+@media (max-width:420px){
+  .who-row{grid-template-columns:10px 62px 1fr 22px;gap:8px;}
+  .who-item{font-size:.82rem;}
+  .who-names{font-size:.78rem;}
+}
 .vote-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:560px;margin:0 auto;}
 @media (min-width:620px){.vote-grid{grid-template-columns:repeat(3,1fr);gap:14px;}}
 /* 5 個選項：單數最後一個置中，唔好孤零零靠左 */
@@ -660,12 +713,23 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
     <h2 class="section-title">Adrien 會抓邊樣？</h2>
     <p class="vote-lead">一歲「抓周」—— 佢第一樣揸上手嘅嘢，話你知佢將來行邊條路。撳一個你覺得佢會揀嘅，睇下大家點估。</p>
 
+    <div class="vote-name">
+      <label for="voteName">你叫咩名？</label>
+      <input id="voteName" type="text" maxlength="20" autocomplete="name"
+             enterkeyhint="done" placeholder="例如：姑媽 May">
+      <p class="vote-name-hint" id="voteNameHint">寫個名，等大家知邊個估邊樣</p>
+    </div>
+
     <div class="vote-grid" id="voteGrid"></div>
 
     <p class="vote-total" id="voteTotal">即刻投票</p>
     <div class="vote-bars" id="voteBars"></div>
     <p class="vote-refresh"><button type="button" id="voteRefresh">更新票數</button></p>
-    <p class="vote-note">一部電話一票 · 投完可以睇走勢，結果唔會影響 Adrien 嘅決定 😄</p>
+    <div class="vote-who-wrap" id="voteWhoWrap" hidden>
+      <h3 class="vote-who-title">邊個估邊樣</h3>
+      <div class="vote-who" id="voteWho"></div>
+    </div>
+    <p class="vote-note">一部電話一票 · 個名會公開喺呢頁 · 結果唔會影響 Adrien 嘅決定 😄</p>
     <a class="section-cue" href="#message" aria-label="向下"><i>↓</i></a>
   </div>
 </section>
@@ -852,6 +916,20 @@ const barsEl = document.getElementById('voteBars');
 const totalEl = document.getElementById('voteTotal');
 const DEVICE_KEY = 'adrien_zhuazhou_device';
 const VOTE_KEY   = 'adrien_zhuazhou_vote';
+const NAME_KEY   = 'adrien_zhuazhou_name';
+
+const nameInput = document.getElementById('voteName');
+const nameHint  = document.getElementById('voteNameHint');
+const whoWrap   = document.getElementById('voteWhoWrap');
+const whoBox    = document.getElementById('voteWho');
+
+nameInput.value = localStorage.getItem(NAME_KEY) || '';
+nameInput.addEventListener('input', () => {
+  localStorage.setItem(NAME_KEY, nameInput.value.trim().slice(0, 20));
+  nameInput.classList.remove('nudge');
+  nameHint.classList.remove('warn');
+  nameHint.textContent = '寫個名，等大家知邊個估邊樣';
+});
 
 let deviceId = localStorage.getItem(DEVICE_KEY);
 if (!deviceId) {
@@ -860,6 +938,12 @@ if (!deviceId) {
 }
 let myVote = localStorage.getItem(VOTE_KEY) || '';
 let counts = {};
+let voters = [];
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 ITEMS.forEach(it => {
   const b = document.createElement('button');
@@ -875,6 +959,28 @@ ITEMS.forEach(it => {
   b.addEventListener('click', () => castVote(it.id));
   grid.appendChild(b);
 });
+
+if (myVote) {
+  nameInput.setAttribute('readonly', '');
+  nameHint.textContent = '你已經投咗票';
+}
+
+function paintWho() {
+  if (!whoWrap) return;
+  if (!voters.length) { whoWrap.hidden = true; return; }
+  const byChoice = {};
+  voters.forEach(v => { (byChoice[v.c] = byChoice[v.c] || []).push(v.n); });
+  whoBox.innerHTML = ITEMS.filter(it => byChoice[it.id] && byChoice[it.id].length).map(it => {
+    const names = byChoice[it.id];
+    return '<div class="who-row">' +
+      '<span class="who-dot" style="background:' + it.color + '"></span>' +
+      '<span class="who-item">' + it.zh + '</span>' +
+      '<span class="who-names">' + names.map(esc).join('、') + '</span>' +
+      '<span class="who-n">' + names.length + '</span>' +
+      '</div>';
+  }).join('');
+  whoWrap.hidden = false;
+}
 
 function paint() {
   const total = ITEMS.reduce((s, it) => s + (counts[it.id] || 0), 0);
@@ -894,19 +1000,36 @@ function paint() {
     c.classList.toggle('is-mine', c.dataset.id === myVote);
     if (myVote) c.setAttribute('disabled', '');
   });
+  paintWho();
 }
 
 function castVote(id) {
   if (myVote || !VOTE_ON) return;
+
+  // 名係必填 —— 冇名就唔知邊個投咗
+  const nm = (nameInput.value || '').trim().slice(0, 20);
+  if (!nm) {
+    nameInput.classList.remove('nudge');
+    void nameInput.offsetWidth;               // restart the shake
+    nameInput.classList.add('nudge');
+    nameHint.textContent = '先寫個名，先投得票 🙂';
+    nameHint.classList.add('warn');
+    nameInput.focus();
+    return;
+  }
+  localStorage.setItem(NAME_KEY, nm);
+
   myVote = id;
   localStorage.setItem(VOTE_KEY, id);
   counts[id] = (counts[id] || 0) + 1;
+  voters = voters.concat([{ n: nm, c: id }]);
+  nameInput.setAttribute('readonly', '');
   paint();                                   // 本地先畫，即時有反應，唔等伺服器
 
   /* 屋企 60 部電話同一秒撳，偶爾有一次請求會失手。所以重覆送幾次 ——
      伺服器認 device id，同一部機只會有一行（係覆蓋唔係疊加），所以重送零風險。 */
   const url = VOTE_API + '?action=vote&choice=' + encodeURIComponent(id) +
-              '&d=' + encodeURIComponent(deviceId) + '&t=' + Date.now();
+              '&d=' + encodeURIComponent(deviceId) + '&n=' + encodeURIComponent(nm);
   const send = () => { const img = new Image(); img.src = url + '&r=' + Date.now(); };
   send();
   setTimeout(send, 6000);
@@ -921,7 +1044,11 @@ function loadCounts() {
   const cb = 'zhuazhouCounts' + (++jsonpN);
   const s = document.createElement('script');
   window[cb] = data => {
-    if (data && data.counts) { counts = data.counts; paint(); }
+    if (data && data.counts) {
+      counts = data.counts;
+      voters = data.voters || [];
+      paint();
+    }
     delete window[cb];
     s.remove();
   };
