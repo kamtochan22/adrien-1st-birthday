@@ -755,6 +755,30 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   .lucky-out .who{animation:none;}
 }
 
+/* ===== Floating buddy — Adrien's head, on every page, follows the scroll ===== */
+#buddy{
+  position:fixed;right:9px;bottom:calc(11px + env(safe-area-inset-bottom,0px));
+  z-index:60;width:54px;padding:0;border:0;background:none;cursor:pointer;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s ease, transform .45s var(--spring-bounce);
+  transform:translateY(14px) scale(.86);
+  -webkit-tap-highlight-color:transparent;
+}
+#buddy.on{opacity:.58;pointer-events:auto;transform:none;}
+#buddy.on.busy{opacity:1;}
+#buddy.on:active{opacity:1;}
+#buddy .buddy-bob{display:block;animation:buddyBob 3.6s ease-in-out infinite;}
+#buddy img{
+  display:block;width:100%;height:auto;
+  filter:drop-shadow(0 4px 12px rgba(40,28,12,.5)) drop-shadow(0 1px 2px rgba(40,28,12,.4));
+}
+@keyframes buddyBob{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media (max-width:420px){#buddy{width:48px;right:7px;bottom:calc(9px + env(safe-area-inset-bottom,0px));}}
+@media (prefers-reduced-motion:reduce){
+  #buddy .buddy-bob{animation:none;}
+  #buddy{transition:opacity .2s ease;}
+}
+
 /* ===== footer ===== */
 footer{text-align:center;padding:var(--space-xxl) 0 var(--space-xl);background:var(--bg);}
 footer .names{font-family:var(--sans);font-size:1rem;font-weight:400;}
@@ -1031,6 +1055,10 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
   </p>
 </section>
 
+<button id="buddy" type="button" aria-label="返去頂部">
+  <span class="buddy-bob"><img src="adrien-head.png" alt="" width="220" height="435" decoding="async"></span>
+</button>
+
 <footer>
   <div class="container">
     <p class="names">爸爸媽媽 Stephanie · Kam To 謹訂</p>
@@ -1071,6 +1099,48 @@ if (heroCue && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }, { passive: true });
   addEventListener('wheel', e => { if (e.deltaY > 0) kick(Math.min(1, e.deltaY / 40)); }, { passive: true });
   addEventListener('scroll', () => kick(Math.min(1, window.scrollY / 200)), { passive: true });
+}
+
+/* ---------- floating buddy: Adrien's head rides along the whole site ---------- */
+const buddy = document.getElementById('buddy');
+if (buddy) {
+  const reducedB = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const buddyImg = buddy.querySelector('img');
+  let lastY = window.scrollY, tilt = 0, lag = 0, tTilt = 0, tLag = 0, raf = null, calm = null;
+
+  const frame = () => {
+    tTilt *= 0.88; tLag *= 0.88;                       // 脈衝衰減返 0
+    tilt += (tTilt - tilt) * 0.16;
+    lag  += (tLag  - lag)  * 0.14;
+    buddyImg.style.transform =
+      'rotate(' + tilt.toFixed(2) + 'deg) translateY(' + lag.toFixed(2) + 'px)';
+    if (Math.abs(tilt) > 0.06 || Math.abs(tLag) > 0.06) {
+      raf = requestAnimationFrame(frame);
+    } else {
+      raf = null;
+      buddyImg.style.transform = '';
+    }
+  };
+  const wake = () => { if (!reducedB && !raf) raf = requestAnimationFrame(frame); };
+
+  addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const dy = y - lastY;
+    lastY = y;
+    buddy.classList.toggle('on', y > window.innerHeight * 0.7);
+    if (dy) {                                          // 碌落 → 跟住落；碌上 → 跟住上
+      tTilt = Math.max(-15, Math.min(15, tTilt + dy * 0.42));
+      tLag  = Math.max(-18, Math.min(18, tLag  + dy * 0.75));
+      buddy.classList.add('busy');                     // 碌緊：實色；停手 900ms 後變半透明
+      clearTimeout(calm);
+      calm = setTimeout(() => buddy.classList.remove('busy'), 900);
+      wake();
+    }
+  }, { passive: true });
+
+  buddy.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reducedB ? 'auto' : 'smooth' });
+  });
 }
 
 /* ---------- growth film: one tap to play ---------- */
