@@ -10,24 +10,42 @@
   body { margin:0; padding:28px 18px 60px; background:var(--cream); color:var(--ink);
          font:16px/1.5 -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif; text-align:center; }
   h1 { margin:0 0 4px; font-size:clamp(26px,6vw,44px); letter-spacing:.08em; color:var(--teal); }
-  p.sub { margin:0 0 22px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.75; }
-  img.page { width:min(560px,100%); height:auto; border-radius:10px; box-shadow:0 8px 30px rgba(74,52,38,.18); }
-  .btns { margin:24px auto 6px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  a.btn { display:inline-block; padding:12px 22px; border-radius:999px; text-decoration:none;
-          font-weight:600; letter-spacing:.06em; font-size:14px; }
+  p.sub { margin:0 0 26px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.75; }
+  .wrap { display:flex; gap:26px; justify-content:center; flex-wrap:wrap; }
+  .card { width:min(430px,100%); }
+  .card h2 { font-size:14px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 10px; opacity:.8; font-weight:600; }
+  img.page { width:100%; height:auto; border-radius:10px; box-shadow:0 8px 30px rgba(74,52,38,.18); }
+  .btns { margin:14px 0 0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  a.btn { display:inline-block; padding:11px 20px; border-radius:999px; text-decoration:none;
+          font-weight:600; letter-spacing:.06em; font-size:13px; }
   a.pdf { background:var(--teal); color:#fff; }
   a.jpg { background:var(--sage); color:var(--ink); }
-  small { display:block; margin-top:26px; opacity:.7; font-size:12.5px; line-height:1.7; }
+  small { display:block; margin-top:34px; opacity:.7; font-size:12.5px; line-height:1.7; }
 </style>
 </head>
 <body>
   <h1>RUNDOWN</h1>
   <p class="sub">Adrien 1st Birthday &middot; 17 Oct 2026 &middot; Club Lusitano 27/F</p>
-  <a href="rundown_A4.jpg"><img class="page" src="rundown_A4.jpg" alt="Adrien 1st birthday rundown"></a>
-  <div class="btns">
-    <a class="btn pdf" href="rundown_A4.pdf" download>Download PDF (A4)</a>
-    <a class="btn jpg" href="rundown_A4.jpg" download>Download JPG</a>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>A &middot; no footer</h2>
+      <a href="rundown_A4.jpg"><img class="page" src="rundown_A4.jpg" alt="rundown, no footer"></a>
+      <div class="btns">
+        <a class="btn pdf" href="rundown_A4.pdf" download>PDF</a>
+        <a class="btn jpg" href="rundown_A4.jpg" download>JPG</a>
+      </div>
+    </div>
+    <div class="card">
+      <h2>B &middot; keeps info footer</h2>
+      <a href="rundown_A4_info.jpg"><img class="page" src="rundown_A4_info.jpg" alt="rundown, info footer"></a>
+      <div class="btns">
+        <a class="btn pdf" href="rundown_A4_info.pdf" download>PDF</a>
+        <a class="btn jpg" href="rundown_A4_info.jpg" download>JPG</a>
+      </div>
+    </div>
   </div>
+
   <small>
     Photo booth 全日開放 &middot; Photographer ends 3:30pm<br>
     <a href="../" style="color:var(--teal)">← invite</a> &middot;
