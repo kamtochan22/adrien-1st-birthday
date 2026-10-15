@@ -489,14 +489,60 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
 @keyframes hintFade{0%{opacity:1}100%{opacity:0}}
 
 #gateClose{
-  position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  position:absolute;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
   z-index:40;display:none;align-items:center;gap:7px;
   background:rgba(20,17,14,.72);color:#fff;border:0;cursor:pointer;
   font-family:var(--sans);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
   padding:10px 18px;border-radius:var(--radius-full);
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
 }
-#message.revealed ~ #gateClose,#gateClose.show{display:inline-flex;}
+#gateClose.show{display:inline-flex;}
+
+/* ===== Page 5b — the invitation itself (only after the envelope is opened) ===== */
+#wedding{display:none;background:#F8F7F5;}
+body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.wed-head{
+  text-align:center;padding:clamp(34px,7vh,64px) var(--space-lg) clamp(18px,3vh,28px);
+}
+.wed-head .kicker{
+  display:block;font-family:var(--round);font-size:.58rem;font-weight:600;
+  letter-spacing:.34em;text-transform:uppercase;color:var(--tertiary);margin-bottom:12px;
+}
+.wed-head h2{
+  font-family:'Great Vibes',cursive;font-size:clamp(2rem,9vw,2.8rem);
+  line-height:1.2;color:var(--primary);font-weight:400;
+}
+.wed-head .sub{
+  margin-top:12px;font-family:var(--sans);font-size:.75rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(59,40,20,.5);
+}
+.wed-frame{position:relative;height:100svh;background:#F8F7F5;border-top:1px solid rgba(59,40,20,.10);}
+.wed-frame iframe{display:block;width:100%;height:100%;border:0;background:#F8F7F5;}
+.wed-loading{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#F8F7F5;transition:opacity .5s ease;
+}
+.wed-loading.done{opacity:0;pointer-events:none;}
+.wed-loading i{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid rgba(59,40,20,.18);border-top-color:var(--secondary);
+  animation:spin .9s linear infinite;display:block;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wed-foot{
+  text-align:center;padding:var(--space-lg) var(--space-lg) var(--space-xxl);
+  background:#F8F7F5;
+}
+.wed-foot a{
+  font-family:var(--round);font-size:.6rem;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--secondary);text-decoration:none;
+  border-bottom:1px solid rgba(55,141,179,.35);padding-bottom:2px;
+}
+@media (prefers-reduced-motion:reduce){
+  body.letter-open #wedding{animation:none;}
+  .wed-loading i{animation:none;}
+}
 @media (prefers-reduced-motion:reduce){
   #message .env-burst,#message .burst-spark,#message .burst-rays,#message .env-shine{animation:none!important;opacity:0!important}
   #message .env-flap-wrap,#message .card{transition-duration:.01s}
@@ -715,8 +761,24 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
   </div>
 
   <p class="open-hint">Tap to open</p>
+  <button id="gateClose" type="button">✕ 收起封信</button>
 </section>
-<button id="gateClose" type="button">✕ 收起封信</button>
+
+<!-- ============ 5b · THE INVITATION ITSELF ============ -->
+<section id="wedding" aria-label="Stephanie &amp; Richard — 我哋嘅邀請">
+  <div class="wed-head">
+    <span class="kicker">Continue</span>
+    <h2>Stephanie &amp; Richard</h2>
+    <p class="sub">2027 · 繼續向下睇我哋嘅故事</p>
+  </div>
+  <div class="wed-frame">
+    <iframe id="wedIframe" title="Stephanie &amp; Richard 邀請"></iframe>
+    <div class="wed-loading" id="wedLoading" aria-hidden="true"><i></i></div>
+  </div>
+  <p class="wed-foot">
+    <a href="https://kamtochan22.github.io/stephanie-richard-wedding/" target="_blank" rel="noopener">喺新視窗打開完整邀請 →</a>
+  </p>
+</section>
 
 <footer>
   <div class="container">
@@ -880,6 +942,17 @@ if (VOTE_ON) {
 }
 
 /* ---------- page 5: the message ---------- */
+const WED_URL = 'https://kamtochan22.github.io/stephanie-richard-wedding/?skipenvelope=1';
+const wedIframe = document.getElementById('wedIframe');
+const wedLoading = document.getElementById('wedLoading');
+function loadWedding() {
+  if (!wedIframe || wedIframe.dataset.loaded) return;
+  wedIframe.dataset.loaded = '1';
+  wedIframe.addEventListener('load', () => wedLoading.classList.add('done'), { once: true });
+  setTimeout(() => wedLoading.classList.add('done'), 9000);   // 保險：網絡慢都唔會轉一世
+  wedIframe.src = WED_URL;
+}
+
 const gate = document.getElementById('message');
 const gateClose = document.getElementById('gateClose');
 if (gate) {
@@ -934,6 +1007,8 @@ if (gate) {
       gate.removeAttribute('role');
       gate.style.cursor = 'default';
       document.body.classList.remove('gate-locked');
+      document.body.classList.add('letter-open');   // 露出下面成個 wedding 邀請
+      loadWedding();
     }, t3);
   };
 
@@ -949,6 +1024,7 @@ if (gate) {
     gate.setAttribute('role', 'button');
     gate.style.cursor = 'pointer';
     gateClose.classList.remove('show');
+    document.body.classList.remove('letter-open');
     const card = gate.querySelector('.card');
     if (card) { card.style.removeProperty('--k'); card.style.removeProperty('--tx'); card.style.removeProperty('--ty'); }
     setTimeout(layoutEnvelope, 60);
