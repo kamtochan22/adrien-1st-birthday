@@ -612,6 +612,144 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   #message .seal::after{animation:none}
 }
 
+/* ===== page 4 — 最喜愛相 favourite photo ===== */
+.fav-section{background:var(--bg);}
+.fav-lead{max-width:560px;margin:-10px auto var(--space-xl);text-align:center;color:rgba(59,40,20,.72);font-size:.95rem;line-height:1.8;}
+.fav-champ{max-width:400px;margin:0 auto var(--space-xxl);text-align:center;}
+.fav-champ .shot{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--outline);box-shadow:var(--shadow-raised);}
+.fav-champ .shot img{display:block;width:100%;height:auto;}
+.fav-champ .crown{
+  position:absolute;top:12px;left:12px;background:rgba(253,246,237,.95);
+  border-radius:var(--radius-full);padding:6px 13px;font-family:var(--round);font-weight:600;
+  font-size:.6rem;letter-spacing:.18em;color:var(--brick);box-shadow:var(--shadow-card);
+}
+.fav-champ figcaption{margin-top:16px;font-size:.85rem;color:rgba(59,40,20,.62);line-height:1.8;}
+.fav-champ .big{display:block;font-family:var(--round);font-weight:700;font-size:1.7rem;color:var(--brick);margin-bottom:6px;}
+.fav-bars{max-width:600px;margin:0 auto;display:grid;gap:9px;}
+.fav-row{
+  display:grid;grid-template-columns:50px 1fr 58px;gap:12px;align-items:center;
+  padding:10px 12px;background:var(--surface);border:1px solid var(--neutral);border-radius:var(--radius-md);
+}
+.fav-row .thumb{width:50px;height:50px;object-fit:cover;border-radius:9px;border:1px solid var(--outline);display:block;background:var(--neutral);}
+.fav-row .mid{min-width:0;}
+.fav-row .lbl{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--primary);}
+.fav-row .lbl b{font-family:var(--round);font-weight:600;}
+.fav-row .lbl span{font-size:.72rem;color:rgba(59,40,20,.45);}
+.fav-row .track{height:8px;border-radius:var(--radius-full);background:rgba(59,40,20,.09);overflow:hidden;margin-top:8px;}
+.fav-row .fill{display:block;height:100%;width:0;border-radius:var(--radius-full);background:var(--secondary);transition:width .9s var(--spring);}
+.fav-row .pct{font-family:var(--round);font-weight:700;font-size:1.05rem;color:var(--brick);text-align:right;}
+.fav-row .pct small{display:block;font-size:.58rem;font-weight:600;letter-spacing:.06em;color:rgba(59,40,20,.42);}
+.fav-row.is-top{background:#FFF8F5;border-color:rgba(168,58,44,.34);}
+.fav-row.is-top .fill{background:var(--brick);}
+.fav-all{max-width:600px;margin:var(--space-lg) auto 0;}
+.fav-all>summary{
+  cursor:pointer;list-style:none;text-align:center;padding:12px;
+  font-family:var(--round);font-weight:600;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(59,40,20,.5);border-bottom:1px dashed rgba(59,40,20,.16);
+}
+.fav-all>summary::-webkit-details-marker{display:none;}
+.fav-all .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;}
+@media (min-width:560px){.fav-all .grid{grid-template-columns:repeat(6,1fr);gap:8px;}}
+.fav-all .cell{position:relative;}
+.fav-all .cell img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:8px;border:1px solid var(--outline);background:var(--neutral);}
+.fav-all .cell .num{
+  position:absolute;left:4px;bottom:4px;background:rgba(253,246,237,.92);border-radius:6px;padding:1px 5px;
+  font-family:var(--round);font-weight:600;font-size:.56rem;color:var(--primary);box-shadow:0 1px 3px rgba(59,40,20,.14);
+}
+.fav-note{max-width:600px;margin:var(--space-md) auto 0;text-align:center;font-size:.76rem;color:rgba(59,40,20,.5);line-height:1.8;}
+
+/* ===== lucky draw machine（只有主人家電話解鎖） ===== */
+.lucky{
+  max-width:420px;margin:var(--space-xxl) auto 0;padding-top:var(--space-xl);
+  border-top:1px dashed rgba(59,40,20,.18);text-align:center;
+}
+.lucky .lucky-title{font-family:var(--round);font-weight:600;font-size:1rem;color:var(--primary);}
+.lucky .lucky-sub{max-width:330px;margin:8px auto 0;font-size:.8rem;color:rgba(59,40,20,.6);line-height:1.8;}
+.machine{position:relative;width:250px;height:320px;margin:24px auto 0;}
+.machine .drum{
+  position:absolute;left:50%;top:6px;width:230px;height:230px;margin-left:-115px;border-radius:50%;
+  background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.96),rgba(243,237,227,.62) 52%,rgba(196,184,168,.55) 100%);
+  box-shadow:inset 0 0 0 7px rgba(234,224,205,.92),inset 0 12px 28px rgba(255,255,255,.75),
+             inset 0 -16px 34px rgba(120,100,70,.22),0 16px 32px rgba(59,40,20,.16);
+}
+.machine .glare{
+  position:absolute;left:50%;top:6px;width:230px;height:230px;margin-left:-115px;border-radius:50%;z-index:3;
+  background:linear-gradient(118deg,rgba(255,255,255,.62) 0 15%,rgba(255,255,255,0) 42%);pointer-events:none;
+}
+.machine .rim{
+  position:absolute;left:50%;top:6px;width:230px;height:230px;margin-left:-115px;border-radius:50%;z-index:4;
+  box-sizing:border-box;border:7px solid rgba(234,224,205,.5);pointer-events:none;
+  box-shadow:0 2px 6px rgba(59,40,20,.1);
+}
+.machine .balls{position:absolute;inset:0;z-index:2;pointer-events:none;}
+.machine .ball{
+  position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;
+  display:grid;place-items:center;padding:2px;
+  font-family:var(--round);font-weight:600;font-size:.5rem;line-height:1.06;color:#fff;
+  text-align:center;word-break:break-word;text-shadow:0 1px 1px rgba(0,0,0,.22);
+  box-shadow:inset -4px -6px 10px rgba(0,0,0,.18),inset 4px 6px 10px rgba(255,255,255,.55),0 3px 7px rgba(59,40,20,.2);
+  will-change:left,top,transform;
+  transition:left .85s cubic-bezier(.34,.06,.5,1),top .85s cubic-bezier(.34,.06,.5,1),
+             transform .6s var(--spring-bounce),opacity .3s,filter .3s;
+}
+.machine .ball::after{
+  content:"";position:absolute;top:5px;left:9px;width:10px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.6);filter:blur(1px);
+}
+.machine .ball.is-out{opacity:.26;filter:grayscale(.65);}
+.machine .ball.eject{
+  z-index:6;
+  box-shadow:inset -4px -6px 10px rgba(0,0,0,.18),inset 4px 6px 10px rgba(255,255,255,.55),0 10px 20px rgba(59,40,20,.32);
+}
+.machine .chute{
+  position:absolute;left:6px;bottom:14px;width:92px;height:78px;border-radius:0 0 16px 16px;
+  border:4px solid rgba(234,224,205,.9);border-top:none;
+  background:linear-gradient(180deg,rgba(243,237,227,.45),rgba(214,200,174,.85));
+}
+.machine .tray{
+  position:absolute;left:0;bottom:0;width:112px;height:22px;border-radius:11px;
+  background:linear-gradient(180deg,#EAE0CD,#D2C0A0);box-shadow:0 8px 16px rgba(59,40,20,.2);
+}
+.machine .crank{position:absolute;right:0;top:104px;width:46px;height:46px;transform-origin:10px 23px;}
+.machine .crank .axle{
+  position:absolute;left:0;top:19px;width:40px;height:8px;border-radius:6px;
+  background:linear-gradient(180deg,#E6D9BC,#BDA473);
+}
+.machine .crank .knob{
+  position:absolute;right:-4px;top:9px;width:26px;height:26px;border-radius:50%;border:2px solid #EAE0CD;
+  background:radial-gradient(circle at 34% 30%,#FDF6ED,#C4956A);
+}
+.machine.spinning .crank{animation:crankSpin .62s linear infinite;}
+.machine.spinning .drum{animation:drumWobble .46s ease-in-out infinite;}
+.machine.spinning .ball{animation:ballTumble .78s ease-in-out infinite;}
+@keyframes crankSpin{to{transform:rotate(360deg)}}
+@keyframes drumWobble{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+@keyframes ballTumble{0%{transform:translate(0,0)}22%{transform:translate(7px,-10px)}47%{transform:translate(-8px,6px)}72%{transform:translate(6px,9px)}100%{transform:translate(0,0)}}
+.draw-btn{
+  margin-top:26px;padding:15px 38px;font:inherit;font-family:var(--round);font-weight:600;
+  font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-primary);
+  background:var(--brick);border:none;border-radius:var(--radius-full);cursor:pointer;
+  box-shadow:0 12px 24px rgba(168,58,44,.3);transition:transform .16s var(--spring),opacity .2s,box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.draw-btn:active{transform:scale(.97);}
+.draw-btn[disabled]{opacity:.45;cursor:default;box-shadow:none;}
+.lucky-out{margin-top:20px;min-height:70px;}
+.lucky-out .who{display:block;font-family:var(--round);font-weight:700;font-size:1.6rem;color:var(--brick);animation:whoIn .55s var(--spring-bounce) both;}
+.lucky-out .sub{display:block;margin-top:8px;font-size:.8rem;color:rgba(59,40,20,.6);line-height:1.8;}
+@keyframes whoIn{from{opacity:0;transform:scale(.7) translateY(10px)}to{opacity:1;transform:none}}
+.lucky-reset{
+  margin-top:6px;padding:4px 0;font:inherit;font-size:.68rem;letter-spacing:.1em;
+  color:rgba(59,40,20,.42);background:none;border:none;border-bottom:1px solid rgba(59,40,20,.2);cursor:pointer;
+}
+.host-only{margin:16px auto 0;font-size:.66rem;letter-spacing:.06em;color:rgba(59,40,20,.35);}
+@media (prefers-reduced-motion:reduce){
+  .machine.spinning .crank,.machine.spinning .drum,.machine.spinning .ball{animation:none;}
+  .machine .ball{transition-duration:.2s;}
+  .lucky-out .who{animation:none;}
+  .fav-row .fill{transition:none;}
+}
+
 /* ===== footer ===== */
 footer{text-align:center;padding:var(--space-xxl) 0 var(--space-xl);background:var(--bg);}
 footer .names{font-family:var(--sans);font-size:1rem;font-weight:400;}
@@ -702,11 +840,57 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
       </button>
     </div>
     <p class="leader">由拍拖、超聲波、陀住你，到出世同第一年 —— 一齊睇返。</p>
+    <a class="section-cue" href="#favphoto" aria-label="向下"><i>↓</i></a>
+  </div>
+</section>
+
+<!-- ============ 4 · FAVOURITE PHOTO ============ -->
+<section class="fav-section section" id="favphoto">
+  <div class="container">
+    <span class="eyebrow">Favourite photo · 最喜愛相</span>
+    <h2 class="section-title">大家最鍾意邊張？</h2>
+    <p class="fav-lead">邀請大家嗰陣問過一句「最鍾意邊張相」。29 個回覆、23 票，結果如下。<br>百分比以投票組數計，唔會公開邊個投邊張。</p>
+
+    <figure class="fav-champ">
+      <div class="shot">
+        <span class="crown">🥇 冠軍相</span>
+        <img src="pics/12.jpg" alt="最受歡迎嘅相：相 12">
+      </div>
+      <figcaption><span class="big">相 12 · 26%</span>6 個組別揀咗呢張，係 26 張入面最多人揀嘅一張。</figcaption>
+    </figure>
+
+    <div class="fav-bars" id="favBars"></div>
+
+    <details class="fav-all">
+      <summary>睇全部 26 張相</summary>
+      <div class="grid" id="favAllGrid"></div>
+    </details>
+
+    <p class="fav-note">相號對應 eInvite 相簿 1–26。Edel 答「全部」，唔計入百分比。</p>
+
+    <div class="lucky" id="lucky" hidden>
+      <h3 class="lucky-title">🎰 攪珠：揀中冠軍相嘅人</h3>
+      <p class="lucky-sub">相 12 有 6 票、11 位大人。撳「攪珠」，睇下邊位係幸運兒。</p>
+      <div class="machine" id="machine" aria-hidden="true">
+        <div class="drum"></div>
+        <div class="glare"></div>
+        <div class="balls" id="machineBalls"></div>
+        <div class="rim"></div>
+        <div class="crank"><span class="axle"></span><span class="knob"></span></div>
+        <div class="chute"></div>
+        <div class="tray"></div>
+      </div>
+      <button class="draw-btn" id="drawBtn" type="button">攪珠</button>
+      <p class="lucky-out" id="luckyOut" aria-live="polite"></p>
+      <button class="lucky-reset" id="luckyReset" type="button">重設抽籤</button>
+      <p class="host-only">只有主人家嘅電話見到呢個掣</p>
+    </div>
+
     <a class="section-cue" href="#zhuazhou" aria-label="向下"><i>↓</i></a>
   </div>
 </section>
 
-<!-- ============ 4 · ZHUAZHOU VOTE ============ -->
+<!-- ============ 5 · ZHUAZHOU VOTE ============ -->
 <section class="vote-section section" id="zhuazhou">
   <div class="container">
     <span class="eyebrow">Zhuazhou · 抓周</span>
@@ -734,7 +918,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
   </div>
 </section>
 
-<!-- ============ 5 · THE MESSAGE ============ -->
+<!-- ============ 6 · THE MESSAGE ============ -->
 <section id="message" role="button" tabindex="0" aria-label="We have a message to you — tap to open">
   <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
     <filter id="bloomLight" x="-95%" y="-95%" width="290%" height="290%" color-interpolation-filters="sRGB">
@@ -1204,6 +1388,193 @@ if (gate) {
     gate.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
+
+/* ===== page 4 — 最喜愛相（結果） ===== */
+(function(){
+  const TOTAL = 23;   // 投票組數（Edel 答「全部」，唔計）
+  const FAV = [[12,6],[10,5],[5,3],[15,2],[1,1],[2,1],[8,1],[14,1],[22,1],[23,1],[26,1]];
+  const bars = document.getElementById('favBars');
+  if (bars){
+    const max = Math.max.apply(null, FAV.map(r => r[1]));
+    bars.innerHTML = FAV.map((r, i) => {
+      const n = r[0], v = r[1], pct = Math.round(v / TOTAL * 100);
+      return '<div class="fav-row' + (i === 0 ? ' is-top' : '') + '">' +
+        '<img class="thumb" src="pics/' + n + '.jpg" alt="相 ' + n + '" loading="lazy" decoding="async">' +
+        '<div class="mid"><div class="lbl"><b>相 ' + n + '</b><span>' + v + ' 票</span></div>' +
+        '<div class="track"><span class="fill" data-w="' + Math.round(v / max * 100) + '%"></span></div></div>' +
+        '<div class="pct">' + pct + '%<small>投票組</small></div></div>';
+    }).join('');
+    const run = () => bars.querySelectorAll('.fill').forEach(f => { f.style.width = f.dataset.w; });
+    if ('IntersectionObserver' in window){
+      const io = new IntersectionObserver(es => {
+        es.forEach(e => { if (e.isIntersecting){ run(); io.disconnect(); } });
+      }, { threshold: .2 });
+      io.observe(bars);
+    } else { run(); }
+  }
+  const all = document.getElementById('favAllGrid');
+  if (all){
+    let h = '';
+    for (let n = 1; n <= 26; n++){
+      h += '<span class="cell"><img src="pics/' + n + '.jpg" alt="相 ' + n +
+           '" loading="lazy" decoding="async"><span class="num">' + n + '</span></span>';
+    }
+    all.innerHTML = h;
+  }
+})();
+
+/* ===== page 4 — 攪珠機（只有主人家解鎖：網址加 ?host=adrien17） ===== */
+(function(){
+  const CODE = 'adrien17';
+  const BOX  = document.getElementById('lucky');
+  if (!BOX) return;
+
+  function askCode(){
+    const t = document.querySelector('#favphoto .section-title');
+    if (!t) return;
+    let n = 0, tm = 0;
+    t.addEventListener('click', () => {
+      clearTimeout(tm); n++; tm = setTimeout(() => { n = 0; }, 1200);
+      if (n >= 5){
+        n = 0;
+        if (window.prompt('攪珠密碼？') === CODE){
+          try { localStorage.setItem('adrien_host', '1'); } catch(e){}
+          location.reload();
+        }
+      }
+    });
+  }
+
+  const tok = new URLSearchParams(location.search).get('host');
+  if (tok === CODE){ try { localStorage.setItem('adrien_host', '1'); } catch(e){} }
+  let host = false;
+  try { host = localStorage.getItem('adrien_host') === '1'; } catch(e){}
+  if (!host){ askCode(); return; }
+
+  const BALLS = [
+    ['Andy',      'Andy + Carmen 家'],
+    ['Carmen',    'Andy + Carmen 家'],
+    ['鍾先生',     '鍾先生 + 鍾太太 + 鍾家姐姐'],
+    ['鍾太太',     '鍾先生 + 鍾太太 + 鍾家姐姐'],
+    ['鍾家姐姐',   '鍾先生 + 鍾太太 + 鍾家姐姐'],
+    ['姨公',       '姨婆Eva + 姨公'],
+    ['Steven',    'Steven + Denise 家'],
+    ['Denise',    'Steven + Denise 家'],
+    ['Hoi Ling',  'Chan Hoi Ling'],
+    ['Ling Ling', 'Ling Ling + Tong 家'],
+    ['Tong',      'Ling Ling + Tong 家']
+  ];
+  const COLORS = ['#A83A2C','#8A9A7B','#378DB3','#C4956A','#B5657A','#6E8B6B'];
+  const DRAWN_KEY = 'adrien_lucky_drawn';
+  const CX = 125, CY = 121;
+  const RINGS = [[4, 42, 45], [7, 84, 12.5]];
+  const CHUTE = { inside: [52, 248], rest: [52, 286] };
+
+  BOX.hidden = false;
+  const machine = document.getElementById('machine');
+  const holder  = document.getElementById('machineBalls');
+  const btn     = document.getElementById('drawBtn');
+  const out     = document.getElementById('luckyOut');
+  const reset   = document.getElementById('luckyReset');
+
+  let drawn = [];
+  try { drawn = JSON.parse(localStorage.getItem(DRAWN_KEY) || '[]'); } catch(e){}
+
+  const nodes = [], pos = [];
+  let i = 0;
+  RINGS.forEach(ring => {
+    const count = ring[0], r = ring[1], off = ring[2];
+    for (let k = 0; k < count; k++){
+      const a = (360 / count * k + off) * Math.PI / 180;
+      const x = CX + Math.cos(a) * r + (i % 3 - 1) * 3;
+      const y = CY + Math.sin(a) * r + ((i * 2) % 3 - 1) * 3;
+      const b = document.createElement('span');
+      b.className = 'ball';
+      b.style.left = x + 'px';
+      b.style.top  = y + 'px';
+      b.style.background = 'radial-gradient(circle at 34% 30%, rgba(255,255,255,.55), ' +
+                           COLORS[i % COLORS.length] + ' 62%)';
+      b.style.animationDelay = (i * 0.07) + 's';
+      b.style.animationDuration = (0.7 + (i % 4) * 0.09) + 's';
+      b.textContent = BALLS[i][0];
+      b.dataset.name = BALLS[i][0];
+      b.dataset.home = BALLS[i][1];
+      holder.appendChild(b);
+      nodes.push(b); pos.push([x, y]);
+      i++;
+    }
+  });
+
+  const paint = () => nodes.forEach(b => {
+    b.classList.toggle('is-out', drawn.indexOf(b.dataset.name) > -1);
+  });
+  const left = () => nodes.filter(b => drawn.indexOf(b.dataset.name) === -1);
+  function place(){
+    nodes.forEach((b, k) => {
+      b.style.transition = 'none';
+      b.style.left = pos[k][0] + 'px';
+      b.style.top  = pos[k][1] + 'px';
+      b.style.transform = 'none';
+      b.classList.remove('eject');
+      void b.offsetWidth;
+      b.style.transition = '';
+    });
+  }
+  paint();
+  if (!left().length){
+    btn.disabled = true;
+    btn.textContent = '全部抽完';
+    out.innerHTML = '<span class="sub">11 位都抽過。撳「重設抽籤」可以再嚟。</span>';
+  }
+
+  function roll(max){
+    const a = new Uint32Array(1);
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(a);
+    else a[0] = Math.floor(Math.random() * 4294967296);
+    return a[0] % max;
+  }
+
+  btn.addEventListener('click', () => {
+    const pool = left();
+    if (!pool.length) return;
+    btn.disabled = true;
+    out.innerHTML = '';
+    machine.classList.remove('spinning');
+    void machine.offsetWidth;
+    machine.classList.add('spinning');
+    const win = pool[roll(pool.length)];
+    setTimeout(() => {
+      machine.classList.remove('spinning');
+      win.classList.add('eject');
+      win.style.left = CHUTE.inside[0] + 'px';
+      win.style.top  = CHUTE.inside[1] + 'px';
+      setTimeout(() => {
+        win.style.top = CHUTE.rest[1] + 'px';
+        win.style.transform = 'scale(1.08)';
+        setTimeout(() => {
+          win.style.transform = 'none';
+          drawn.push(win.dataset.name);
+          try { localStorage.setItem(DRAWN_KEY, JSON.stringify(drawn)); } catch(e){}
+          paint();
+          out.innerHTML = '<span class="who">🎉 ' + win.dataset.name + '</span>' +
+            '<span class="sub">' + win.dataset.home + ' · 揀咗相 12（冠軍相）</span>';
+          const rest = left().length;
+          btn.disabled = rest === 0;
+          btn.textContent = rest === 0 ? '全部抽完' : '再攪一粒';
+        }, 420);
+      }, 900);
+    }, 2600);
+  });
+
+  reset.addEventListener('click', () => {
+    drawn = [];
+    try { localStorage.removeItem(DRAWN_KEY); } catch(e){}
+    place(); paint();
+    btn.disabled = false;
+    btn.textContent = '攪珠';
+    out.innerHTML = '';
+  });
+})();
 </script>
 </body>
 </html>
