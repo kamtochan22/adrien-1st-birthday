@@ -774,7 +774,8 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
 /* ===== Floating buddy — Adrien's head, on every page, follows the scroll ===== */
 #buddy{
   position:fixed;right:9px;bottom:calc(11px + env(safe-area-inset-bottom,0px));
-  z-index:60;width:54px;padding:0;border:0;background:none;cursor:pointer;
+  z-index:60;display:block;width:54px;padding:0;border:0;background:none;cursor:pointer;
+  text-decoration:none;
   opacity:0;pointer-events:none;
   transition:opacity .4s ease, transform .45s var(--spring-bounce);
   transform:translateY(14px) scale(.86);
@@ -1073,9 +1074,10 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
   </p>
 </section>
 
-<button id="buddy" type="button" aria-label="返去頂部">
+<a id="buddy" href="https://www.instagram.com/adriiien.chan" target="_blank" rel="noopener"
+   aria-label="Adrien 嘅 Instagram（喺新視窗打開）" title="Adrien 嘅 Instagram">
   <span class="buddy-bob"><img src="adrien-head.png" alt="" width="220" height="435" decoding="async"></span>
-</button>
+</a>
 
 <footer>
   <div class="container">
@@ -1156,9 +1158,8 @@ if (buddy) {
     }
   }, { passive: true });
 
-  buddy.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: reducedB ? 'auto' : 'smooth' });
-  });
+  /* the head links to Adrien's Instagram now — no click handler, so the browser
+     opens the profile (target="_blank") instead of scrolling back to the top */
 }
 
 /* ---------- growth film: one tap to play ---------- */
