@@ -1248,6 +1248,12 @@ let myVote = localStorage.getItem(VOTE_KEY) || '';
 let counts = {};
 let voters = [];
 
+/* ?revote=1 → 清走本機「已投票」紀錄，同一部電話可以再投一次。
+   只影響開呢條 link 嘅嗰部裝置（用於開場前測試；server 認 device id，重投會覆蓋舊行） */
+const REVOTE = /[?&]revote=1(&|$)/.test(location.search);
+if (REVOTE) { try { localStorage.removeItem(VOTE_KEY); } catch (e) {} }
+myVote = localStorage.getItem(VOTE_KEY) || '';
+
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1366,6 +1372,10 @@ function loadCounts() {
 }
 
 paint();
+if (REVOTE) {
+  nameHint.textContent = '已清走本機紀錄 · 可以再投 ✓';
+  nameHint.classList.remove('warn');
+}
 if (VOTE_ON) {
   /* Apps Script 免費帳號每日有總執行時間上限 → 唔可以死 poll，否則party中途爆額度，
      全部人一齊讀唔到票數。三重節流：
