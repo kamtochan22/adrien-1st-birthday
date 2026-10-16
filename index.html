@@ -659,10 +659,9 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   color:var(--on-primary);text-align:left;
 }
 .fav-pod .meta b{display:block;font-family:var(--round);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;opacity:.82;}
-.fav-pod .meta span{font-family:var(--round);font-weight:700;font-size:1.45rem;line-height:1.25;}
 .fav-pod.is-1{grid-column:1 / -1;}
 .fav-pod.is-1 img{aspect-ratio:4/5;}
-.fav-pod.is-1 .meta span{font-size:2rem;}
+.fav-pod.is-1 .meta b{font-size:.8rem;}
 
 /* ===== lucky draw machine（只有主人家電話解鎖） ===== */
 .lucky{
@@ -670,7 +669,7 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   border-top:1px dashed rgba(59,40,20,.18);text-align:center;
 }
 .lucky .lucky-title{font-family:var(--round);font-weight:600;font-size:1rem;color:var(--primary);}
-.lucky .lucky-sub{max-width:330px;margin:8px auto 0;font-size:.8rem;color:rgba(59,40,20,.6);line-height:1.8;}
+
 .machine{position:relative;width:250px;height:320px;margin:24px auto 0;}
 .machine .drum{
   position:absolute;left:50%;top:6px;width:230px;height:230px;margin-left:-115px;border-radius:50%;
@@ -748,7 +747,7 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   margin-top:6px;padding:4px 0;font:inherit;font-size:.68rem;letter-spacing:.1em;
   color:rgba(59,40,20,.42);background:none;border:none;border-bottom:1px solid rgba(59,40,20,.2);cursor:pointer;
 }
-.lucky-note{margin:16px auto 0;font-size:.66rem;letter-spacing:.06em;color:rgba(59,40,20,.35);}
+
 @media (prefers-reduced-motion:reduce){
   .machine.spinning .crank,.machine.spinning .drum,.machine.spinning .ball{animation:none;}
   .machine .ball{transition-duration:.2s;}
@@ -885,7 +884,6 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 
     <div class="lucky" id="lucky" hidden>
       <h3 class="lucky-title">🎰 攪珠：揀中冠軍相嘅人</h3>
-      <p class="lucky-sub">波波入面係揀咗相 12 嘅 10 位大人。大家都可以撳，睇下邊位係幸運兒。</p>
       <div class="machine" id="machine" aria-hidden="true">
         <div class="drum"></div>
         <div class="glare"></div>
@@ -898,7 +896,6 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
       <button class="draw-btn" id="drawBtn" type="button">攪珠</button>
       <p class="lucky-out" id="luckyOut" aria-live="polite"></p>
       <button class="lucky-reset" id="luckyReset" type="button">重設抽籤</button>
-      <p class="lucky-note">一部電話一個名額 · 抽過嘅名會變灰</p>
     </div>
 
     <a class="section-cue" href="#zhuazhou" aria-label="向下"><i>↓</i></a>
@@ -1474,18 +1471,18 @@ if (gate) {
 
 /* ===== page 4 — 最喜愛相（冠亞季 + 百分比） ===== */
 (function(){
-  const TOTAL = 23;                     // 投票組數（Edel 答「全部」，唔計）
-  const FAV = [[12,6],[10,5],[5,3]];    // [相號, 票數] — 票數只用嚟計 %，唔會顯示
+  // 冠亞季次序（票數同百分比見 02_邀請嘉賓/最喜愛相-投票結果.md）
+  const FAV = [[12,6],[10,5],[5,3]];
   const pod = document.getElementById('favPodium');
   if (!pod) return;
   const MEDAL = ['🥇 冠軍相', '🥈 亞軍', '🥉 季軍'];
   const CLS   = ['is-1', 'is-2', 'is-3'];
   pod.innerHTML = FAV.map((r, i) => {
-    const n = r[0], pct = Math.round(r[1] / TOTAL * 100);
+    const n = r[0];
     return '<figure class="fav-pod ' + CLS[i] + '">' +
       '<img src="pics/' + n + '.jpg" alt="相 ' + n + '" decoding="async">' +
       '<span class="medal">' + MEDAL[i] + '</span>' +
-      '<figcaption class="meta"><b>相 ' + n + '</b><span>' + pct + '%</span></figcaption>' +
+      '<figcaption class="meta"><b>相 ' + n + '</b></figcaption>' +
       '</figure>';
   }).join('');
 })();
