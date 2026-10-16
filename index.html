@@ -740,7 +740,7 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
   margin-top:6px;padding:4px 0;font:inherit;font-size:.68rem;letter-spacing:.1em;
   color:rgba(59,40,20,.42);background:none;border:none;border-bottom:1px solid rgba(59,40,20,.2);cursor:pointer;
 }
-.host-only{margin:16px auto 0;font-size:.66rem;letter-spacing:.06em;color:rgba(59,40,20,.35);}
+.lucky-note{margin:16px auto 0;font-size:.66rem;letter-spacing:.06em;color:rgba(59,40,20,.35);}
 @media (prefers-reduced-motion:reduce){
   .machine.spinning .crank,.machine.spinning .drum,.machine.spinning .ball{animation:none;}
   .machine .ball{transition-duration:.2s;}
@@ -879,7 +879,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 
     <div class="lucky" id="lucky" hidden>
       <h3 class="lucky-title">🎰 攪珠：揀中冠軍相嘅人</h3>
-      <p class="lucky-sub">波波入面係揀咗相 12 嘅 10 位大人。撳「攪珠」，睇下邊位係幸運兒。</p>
+      <p class="lucky-sub">波波入面係揀咗相 12 嘅 10 位大人。大家都可以撳，睇下邊位係幸運兒。</p>
       <div class="machine" id="machine" aria-hidden="true">
         <div class="drum"></div>
         <div class="glare"></div>
@@ -892,7 +892,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
       <button class="draw-btn" id="drawBtn" type="button">攪珠</button>
       <p class="lucky-out" id="luckyOut" aria-live="polite"></p>
       <button class="lucky-reset" id="luckyReset" type="button">重設抽籤</button>
-      <p class="host-only">只有主人家嘅電話見到呢個掣</p>
+      <p class="lucky-note">一部電話一個名額 · 抽過嘅名會變灰</p>
     </div>
 
     <a class="section-cue" href="#zhuazhou" aria-label="向下"><i>↓</i></a>
@@ -1484,34 +1484,10 @@ if (gate) {
   }).join('');
 })();
 
-/* ===== page 4 — 攪珠機（只有主人家解鎖：網址加 ?host=adrien17） ===== */
+/* ===== page 4 — 攪珠機（公開，人人都玩得） ===== */
 (function(){
-  const CODE = 'adrien17';
-  const BOX  = document.getElementById('lucky');
+  const BOX = document.getElementById('lucky');
   if (!BOX) return;
-
-  function askCode(){
-    const t = document.querySelector('#favphoto .section-title');
-    if (!t) return;
-    let n = 0, tm = 0;
-    t.addEventListener('click', () => {
-      clearTimeout(tm); n++; tm = setTimeout(() => { n = 0; }, 1200);
-      if (n >= 5){
-        n = 0;
-        if (window.prompt('攪珠密碼？') === CODE){
-          try { localStorage.setItem('adrien_host', '1'); } catch(e){}
-          location.reload();
-        }
-      }
-    });
-  }
-
-  const tok = new URLSearchParams(location.search).get('host');
-  if (tok === CODE){ try { localStorage.setItem('adrien_host', '1'); } catch(e){} }
-  let host = false;
-  try { host = localStorage.getItem('adrien_host') === '1'; } catch(e){}
-  if (!host){ askCode(); return; }
-
   const BALLS = [
     ['Andy',      'Andy + Carmen 家'],
     ['Carmen',    'Andy + Carmen 家'],

@@ -53,7 +53,7 @@ coming, the hosts don't vote. **No voter names** on this page — a deliberate a
 Editing the numbers = one array at the top of the inline script: `TOTAL` +
 `FAV = [[photo, votes], …]`, and add rows for 冠亞季 order. Nothing else to touch.
 
-**2. 攪珠 (host only).** A 六合彩-style drum — no images, all CSS (radial-gradient
+**2. 攪珠 (public — everyone plays, owner's call 2026-10-16).** A 六合彩-style drum — no images, all CSS (radial-gradient
 glass, inset rim highlight, spinning crank) with **10 balls**, one per adult of the
 households that voted 相 12. (It was 11: `Chan Hoi Ling` was dropped because the CSV
 records Chan Hoi Ling as the original name of the `Ling Ling + Tong` household — the
@@ -61,10 +61,11 @@ same person was in the drum twice.) Press → drum shakes + balls tumble ~2.6 s 
 chute and drops into the tray → name revealed. Picked with `crypto.getRandomValues`,
 never repeats; the drawn list lives in `localStorage`; 「重設抽籤」 clears it.
 
-Unlock: open **`?host=adrien17`** once — `localStorage.adrien_host` then keeps that
-phone unlocked. Fallback: 5 quick taps on the section title → passcode prompt.
-Guests never see the block (`#lucky` stays `hidden`). The code sits in the source,
-so treat it as a party gag, not security.
+There is **no gate any more** (it started host-only with `?host=<code>`; removed
+2026-10-16 so guests can play too). State is **per phone**: `localStorage` remembers
+which names that phone has already drawn (they go grey), so the same name *can* come
+out on two different phones. A once-only draw shared across all phones would need the
+Apps Script backend (`_vote_setup/vote.gs`) — not wired up.
 
 ### Page 5 — the vote backend
 GitHub Pages is static, so it can't count votes. Uses **Google Apps Script + Google
