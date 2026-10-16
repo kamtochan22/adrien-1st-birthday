@@ -785,6 +785,15 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
 #buddy.on.busy{opacity:1;}
 #buddy.on:active{opacity:1;}
 #buddy .buddy-bob{display:block;animation:buddyBob 3.6s ease-in-out infinite;}
+#buddy .buddy-tap{
+  position:absolute;right:0;bottom:calc(100% + 3px);white-space:nowrap;
+  font-family:var(--round);font-weight:600;font-size:.6rem;letter-spacing:.12em;
+  color:rgba(59,40,20,.78);
+  text-shadow:0 1px 5px rgba(255,251,245,.95),0 0 12px rgba(255,251,245,.75);
+  opacity:.88;
+  animation:tapBob 2.6s ease-in-out infinite;
+}
+@keyframes tapBob{0%,100%{translate:0 0}50%{translate:0 -3px}}
 #buddy img{
   display:block;width:100%;height:auto;
   filter:drop-shadow(0 4px 12px rgba(40,28,12,.5)) drop-shadow(0 1px 2px rgba(40,28,12,.4));
@@ -793,6 +802,7 @@ body.letter-open #wedding{display:block;animation:fadeUp .9s ease both;}
 @media (max-width:420px){#buddy{width:48px;right:7px;bottom:calc(9px + env(safe-area-inset-bottom,0px));}}
 @media (prefers-reduced-motion:reduce){
   #buddy .buddy-bob{animation:none;}
+  #buddy .buddy-tap{animation:none;}
   #buddy{transition:opacity .2s ease;}
 }
 
@@ -1076,6 +1086,7 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 
 <a id="buddy" href="https://www.instagram.com/adriiien.chan" target="_blank" rel="noopener"
    aria-label="Adrien 嘅 Instagram（喺新視窗打開）" title="Adrien 嘅 Instagram">
+  <span class="buddy-tap">⬇️ Tap me</span>
   <span class="buddy-bob"><img src="adrien-head.png" alt="" width="220" height="435" decoding="async"></span>
 </a>
 
