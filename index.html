@@ -227,6 +227,23 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
 }
 .film-cover .cap small{display:block;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;opacity:.72;margin-top:5px;}
 .film-cover.gone{display:none;}
+/* YouTube link under the growth film */
+.film-yt{
+  display:flex;align-items:center;gap:13px;max-width:400px;margin:var(--space-lg) auto 0;
+  padding:13px 17px;border-radius:var(--radius-lg);text-decoration:none;
+  background:var(--surface);border:1px solid var(--outline);box-shadow:var(--shadow-card);
+}
+.film-yt:active{transform:translateY(1px);}
+.film-yt .yt-play{
+  flex:0 0 auto;width:36px;height:25px;border-radius:7px;background:var(--brick);position:relative;
+}
+.film-yt .yt-play::after{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-45%);
+  border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent #fff;
+}
+.film-yt .yt-body{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.film-yt .yt-body b{font-family:var(--round);font-weight:600;font-size:.82rem;line-height:1.55;color:var(--primary);}
+.film-yt .yt-body small{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tertiary);}
 .film-section .leader{
   max-width:400px;margin:var(--space-lg) auto 0;text-align:center;
   font-size:.85rem;color:rgba(59,40,20,.62);line-height:1.7;
@@ -871,6 +888,13 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
       </button>
     </div>
     <p class="leader">由拍拖、超聲波、陀住你，到出世同第一年 —— 一齊睇返。</p>
+    <a class="film-yt" href="https://youtu.be/pb3JL-yqFfs" target="_blank" rel="noopener">
+      <span class="yt-play" aria-hidden="true"></span>
+      <span class="yt-body">
+        <b>如果你想重溫 Gender Reveal 嘅 full video</b>
+        <small>YouTube · 完整片段 ↗</small>
+      </span>
+    </a>
     <a class="section-cue" href="#favphoto" aria-label="向下"><i>↓</i></a>
   </div>
 </section>
