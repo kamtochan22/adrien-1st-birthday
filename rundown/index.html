@@ -20,7 +20,9 @@
           font-weight:600; letter-spacing:.06em; font-size:13px; }
   a.pdf { background:var(--teal); color:#fff; }
   a.jpg { background:var(--sage); color:var(--ink); }
+  a.plain { background:transparent; color:var(--teal); box-shadow:inset 0 0 0 1.5px rgba(168,58,44,.4); }
   small { display:block; margin-top:34px; opacity:.7; font-size:12.5px; line-height:1.7; }
+  .qrnote { max-width:560px; margin:26px auto 0; font-size:12.5px; opacity:.75; }
 </style>
 </head>
 <body>
@@ -29,22 +31,29 @@
 
   <div class="wrap">
     <div class="card">
-      <h2>A &middot; no footer</h2>
-      <a href="rundown_A4.jpg"><img class="page" src="rundown_A4.jpg" alt="rundown, no footer"></a>
+      <h2>A &middot; no footer &middot; 有 QR</h2>
+      <a href="rundown_A4_qr.jpg"><img class="page" src="rundown_A4_qr.jpg" alt="rundown A with QR code"></a>
       <div class="btns">
-        <a class="btn pdf" href="rundown_A4.pdf" download>PDF</a>
-        <a class="btn jpg" href="rundown_A4.jpg" download>JPG</a>
+        <a class="btn pdf" href="rundown_A4_qr.pdf" download>PDF · QR</a>
+        <a class="btn jpg" href="rundown_A4_qr.jpg" download>JPG</a>
+        <a class="btn plain" href="rundown_A4.pdf" download>PDF · 無 QR</a>
       </div>
     </div>
     <div class="card">
-      <h2>B &middot; keeps info footer</h2>
-      <a href="rundown_A4_info.jpg"><img class="page" src="rundown_A4_info.jpg" alt="rundown, info footer"></a>
+      <h2>B &middot; info footer &middot; 有 QR</h2>
+      <a href="rundown_A4_info_qr.jpg"><img class="page" src="rundown_A4_info_qr.jpg" alt="rundown B with QR code"></a>
       <div class="btns">
-        <a class="btn pdf" href="rundown_A4_info.pdf" download>PDF</a>
-        <a class="btn jpg" href="rundown_A4_info.jpg" download>JPG</a>
+        <a class="btn pdf" href="rundown_A4_info_qr.pdf" download>PDF · QR</a>
+        <a class="btn jpg" href="rundown_A4_info_qr.jpg" download>JPG</a>
+        <a class="btn plain" href="rundown_A4_info.pdf" download>PDF · 無 QR</a>
       </div>
     </div>
   </div>
+
+  <p class="qrnote">
+    QR 喺右下角（約 30 mm），掃一掃就開派對網頁
+    <b>kamtochan22.github.io/adrien-1st-birthday</b>。全部 PDF 都係 A4 300dpi，直接交去印。
+  </p>
 
   <small>
     Photo booth 全日開放 &middot; Photographer ends 3:30pm<br>
