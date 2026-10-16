@@ -79,6 +79,9 @@ h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;}
   object-fit:cover;object-position:center 42%;opacity:0;transition:opacity 0.9s ease;
 }
 .hero-media img.is-on{opacity:1;}
+/* the birthday-party frame is landscape, so bias the crop onto the family
+   (they sit right of centre) — phones crop the sides, desktops crop top/bottom */
+.hero-media img.is-wide{object-position:60% 42%;}
 .hero-scrim{
   position:absolute;inset:auto 0 0;z-index:2;height:52%;
   background:linear-gradient(180deg, transparent 0%, rgba(17,17,17,0.45) 38%, rgba(17,17,17,0.80) 100%);
@@ -825,7 +828,8 @@ footer .love{color:var(--tertiary);margin-top:var(--space-md);}
 <!-- ============ 1 · HERO ============ -->
 <section class="hero">
   <div class="hero-media">
-    <img class="is-on" src="hero_bg.jpg" alt="Stephanie 托起 Adrien" width="1600" height="2400" fetchpriority="high" decoding="async">
+    <img class="is-on is-wide" src="hero_party.jpg" alt="一家三口喺生日會背景前" width="1280" height="853" fetchpriority="high" decoding="async">
+    <img src="hero_bg.jpg" alt="Stephanie 托起 Adrien" width="1600" height="2400" decoding="async">
     <img src="hero_22.jpg" alt="" width="1600" height="2400" decoding="async">
     <img src="hero_151.jpg" alt="" width="1600" height="2400" decoding="async">
   </div>
